@@ -5,7 +5,7 @@ import os
 import time
 from typing import Callable, List, Optional
 from dotenv import load_dotenv
-from get_db_schema import execute_query, get_db_schema
+from backend.get_db_schema import execute_query, get_db_schema
 import ollama
 import sqlparse
 from pydantic import BaseModel, Field

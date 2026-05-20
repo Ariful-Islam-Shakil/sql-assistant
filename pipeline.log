@@ -1,0 +1,4036 @@
+2026-05-14 13:13:06 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-14 13:13:06 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:13:06 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-14 13:13:06 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:13:06 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-14 13:13:06 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-14 13:13:35 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT * FROM products WHERE gender = 'men' AND color = 'Black' ORDER BY price DESC LIMIT 3",
+  "required_tables": ["products"],
+  "is_relevant": true,
+  "required_columns": [
+    "products.id",
+    "products.name",
+    "products.description",
+    "products.brand_id",
+    "products.category_id",
+    "products.gender",
+    "products.price",
+    "products.is_deleted",
+    "products.created_at",
+    "products.updated_at"
+  ]
+}
+2026-05-14 13:13:35 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-14 13:13:35 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT * FROM products WHERE gender = 'men' AND color = 'Black' ORDER BY price DESC LIMIT 3",
+  "required_tables": [
+    "products"
+  ],
+  "required_columns": [
+    "products.id",
+    "products.name",
+    "products.description",
+    "products.brand_id",
+    "products.category_id",
+    "products.gender",
+    "products.price",
+    "products.is_deleted",
+    "products.created_at",
+    "products.updated_at"
+  ],
+  "filter_conditions": [],
+  "is_relevant": true
+}
+2026-05-14 13:13:35 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-14 13:13:35 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:13:50 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT id, name, description, brand_id, category_id, gender, price, is_deleted, created_at, updated_at FROM products WHERE gender = 'men' AND color = 'Black' ORDER BY price DESC LIMIT 3"
+}
+2026-05-14 13:13:50 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:13:50 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT id,
+       name,
+       description,
+       brand_id,
+       category_id,
+       gender,
+       price,
+       is_deleted,
+       created_at,
+       updated_at
+FROM products
+WHERE gender = 'men'
+  AND color = 'Black'
+ORDER BY price DESC
+LIMIT 3
+2026-05-14 13:13:50 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 1: (psycopg2.errors.UndefinedColumn) column "color" does not exist
+2026-05-14 13:13:50 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column "color" does not exist
+LINE 13:   AND color = 'Black'
+               ^
+
+[SQL: SELECT id,
+       name,
+       description,
+       brand_id,
+       category_id,
+       gender,
+       price,
+       is_deleted,
+       created_at,
+       updated_at
+FROM products
+WHERE gender = 'men'
+  AND color = 'Black'
+ORDER BY price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:13:50 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-14 13:13:50 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 2/3)...
+2026-05-14 13:13:50 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:13:55 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT id, name, description, brand_id, category_id, gender, price, is_deleted, created_at, updated_at FROM products WHERE gender = 'men' AND color = 'Black' ORDER BY price DESC LIMIT 3"
+}
+2026-05-14 13:13:55 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:13:55 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 2/3):
+SELECT id,
+       name,
+       description,
+       brand_id,
+       category_id,
+       gender,
+       price,
+       is_deleted,
+       created_at,
+       updated_at
+FROM products
+WHERE gender = 'men'
+  AND color = 'Black'
+ORDER BY price DESC
+LIMIT 3
+2026-05-14 13:13:55 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 2: (psycopg2.errors.UndefinedColumn) column "color" does not exist
+2026-05-14 13:13:55 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column "color" does not exist
+LINE 13:   AND color = 'Black'
+               ^
+
+[SQL: SELECT id,
+       name,
+       description,
+       brand_id,
+       category_id,
+       gender,
+       price,
+       is_deleted,
+       created_at,
+       updated_at
+FROM products
+WHERE gender = 'men'
+  AND color = 'Black'
+ORDER BY price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:13:55 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-14 13:13:55 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 3/3)...
+2026-05-14 13:13:55 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:13:58 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT id, name, description, brand_id, category_id, gender, price, is_deleted, created_at, updated_at FROM products WHERE gender = 'men' AND color = 'Black' ORDER BY price DESC LIMIT 3"
+}
+2026-05-14 13:13:58 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:13:58 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 3/3):
+SELECT id,
+       name,
+       description,
+       brand_id,
+       category_id,
+       gender,
+       price,
+       is_deleted,
+       created_at,
+       updated_at
+FROM products
+WHERE gender = 'men'
+  AND color = 'Black'
+ORDER BY price DESC
+LIMIT 3
+2026-05-14 13:13:58 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 3: (psycopg2.errors.UndefinedColumn) column "color" does not exist
+2026-05-14 13:13:58 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column "color" does not exist
+LINE 13:   AND color = 'Black'
+               ^
+
+[SQL: SELECT id,
+       name,
+       description,
+       brand_id,
+       category_id,
+       gender,
+       price,
+       is_deleted,
+       created_at,
+       updated_at
+FROM products
+WHERE gender = 'men'
+  AND color = 'Black'
+ORDER BY price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:13:58 | ERROR    | run_safe_pipeline              | ⛔ PIPELINE FAILED — could not repair query after 3 attempts.
+2026-05-14 13:13:58 | INFO     | <module>                       | Pipeline result status: failed
+
+2026-05-14 13:13:58 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:13:58 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-14 13:13:58 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:13:58 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-14 13:13:58 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-14 13:14:24 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT T1.name, T1.price FROM products AS T1 INNER JOIN brands AS T2 ON T1.brand_id = T2.id WHERE T1.gender = 'men'",
+  "required_tables": [
+    "products",
+    "brands"
+  ],
+  "is_relevant": true,
+  "required_columns": [
+    "T1.name",
+    "T1.price",
+    "T1.gender",
+    "T2.id"
+  ]
+}
+2026-05-14 13:14:24 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'brands']
+2026-05-14 13:14:24 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT T1.name, T1.price FROM products AS T1 INNER JOIN brands AS T2 ON T1.brand_id = T2.id WHERE T1.gender = 'men'",
+  "required_tables": [
+    "products",
+    "brands"
+  ],
+  "required_columns": [
+    "T1.name",
+    "T1.price",
+    "T1.gender",
+    "T2.id"
+  ],
+  "filter_conditions": [],
+  "is_relevant": true
+}
+2026-05-14 13:14:24 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-14 13:14:24 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:14:39 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT T1.name, T1.price FROM products AS T1 INNER JOIN brands AS T2 ON T1.brand_id = T2.id WHERE T1.gender = 'men'"
+}
+2026-05-14 13:14:39 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:14:39 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT T1.name,
+       T1.price
+FROM products AS T1
+INNER JOIN brands AS T2 ON T1.brand_id = T2.id
+WHERE T1.gender = 'men'
+2026-05-14 13:14:39 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-14 13:14:39 | DEBUG    | run_safe_pipeline              | Result rows: 15
+2026-05-14 13:14:39 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "name": "Air Max 270",
+    "price": 120.5
+  },
+  {
+    "name": "Converse Skateboarding Elite 16",
+    "price": 124.01
+  },
+  {
+    "name": "Reebok Basketball Max 45",
+    "price": 166.06
+  },
+  {
+    "name": "Under Armour Running Max 37",
+    "price": 90.15
+  },
+  {
+    "name": "Adidas Skateboarding Pro 62",
+    "price": 118.86
+  },
+  {
+    "name": "Nike Basketball Elite 2",
+    "price": 110.9
+  },
+  {
+    "name": "Converse Lifestyle Pro 1",
+    "price": 100.18
+  },
+  {
+    "name": "Nike Running Elite 75",
+    "price": 238.91
+  },
+  {
+    "name": "New Balance Skateboarding Pro 19",
+    "price": 183.13
+  },
+  {
+    "name": "Under Armour Outdoor Elite 89",
+    "price": 232.02
+  },
+  {
+    "name": "New Balance Outdoor Ultra 32",
+    "price": 83.11
+  },
+  {
+    "name": "Adidas Casual Pro 12",
+    "price": 177.28
+  },
+  {
+    "name": "Nike Running Max 98",
+    "price": 52.45
+  },
+  {
+    "name": "Reebok Lifestyle Ultra 54",
+    "price": 100.47
+  },
+  {
+    "name": "Adidas Training Pro 53",
+    "price": 133.71
+  }
+]
+2026-05-14 13:14:39 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-14 13:14:39 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:14:39 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: Show me all 'men' products from 'Nike' that are in the 'Running' category, including their price and primary image path.
+2026-05-14 13:14:39 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:14:39 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-14 13:14:39 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-14 13:15:10 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT products.name, products.description, product_images.image_path FROM products INNER JOIN product_variants ON products.id = product_variants.product_id INNER JOIN product_images ON product_variants.id = product_images.product_id WHERE products.gender = 'men' AND products.brand_id IN ( SELECT id FROM brands WHERE name = 'Nike' ) AND categories.name = 'Running'",
+  "required_tables": [
+    "products",
+    "product_variants",
+    "product_images",
+    "brands",
+    "categories"
+  ],
+  "is_relevant": true,
+  "required_columns": [
+    "products.name",
+    "products.description",
+    "product_images.image_path"
+  ]
+}
+2026-05-14 13:15:10 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'product_variants', 'product_images', 'brands', 'categories']
+2026-05-14 13:15:10 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT products.name, products.description, product_images.image_path FROM products INNER JOIN product_variants ON products.id = product_variants.product_id INNER JOIN product_images ON product_variants.id = product_images.product_id WHERE products.gender = 'men' AND products.brand_id IN ( SELECT id FROM brands WHERE name = 'Nike' ) AND categories.name = 'Running'",
+  "required_tables": [
+    "products",
+    "product_variants",
+    "product_images",
+    "brands",
+    "categories"
+  ],
+  "required_columns": [
+    "products.name",
+    "products.description",
+    "product_images.image_path"
+  ],
+  "filter_conditions": [],
+  "is_relevant": true
+}
+2026-05-14 13:15:10 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-14 13:15:10 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:15:28 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.description, product_images.image_path FROM products INNER JOIN product_variants ON products.id = product_variants.product_id INNER JOIN product_images ON product_variants.id = product_images.product_id WHERE products.gender = 'men' AND products.brand_id IN ( SELECT id FROM brands WHERE name = 'Nike' ) AND categories.name = 'Running'"
+}
+2026-05-14 13:15:28 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:15:28 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.name,
+       products.description,
+       product_images.image_path
+FROM products
+INNER JOIN product_variants ON products.id = product_variants.product_id
+INNER JOIN product_images ON product_variants.id = product_images.product_id
+WHERE products.gender = 'men'
+  AND products.brand_id IN
+    (SELECT id
+     FROM brands
+     WHERE name = 'Nike')
+  AND categories.name = 'Running'
+2026-05-14 13:15:28 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 1: (psycopg2.errors.UndefinedTable) missing FROM-clause entry for table "categories"
+2026-05-14 13:15:28 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedTable) missing FROM-clause entry for table "categories"
+LINE 12:   AND categories.name = 'Running'
+               ^
+
+[SQL: SELECT products.name,
+       products.description,
+       product_images.image_path
+FROM products
+INNER JOIN product_variants ON products.id = product_variants.product_id
+INNER JOIN product_images ON product_variants.id = product_images.product_id
+WHERE products.gender = 'men'
+  AND products.brand_id IN
+    (SELECT id
+     FROM brands
+     WHERE name = 'Nike')
+  AND categories.name = 'Running']
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:15:28 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-14 13:15:28 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 2/3)...
+2026-05-14 13:15:28 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:15:35 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.description, product_images.image_path FROM products INNER JOIN product_variants ON products.id = product_variants.product_id INNER JOIN product_images ON product_variants.id = product_images.product_id INNER JOIN categories ON products.category_id = categories.id WHERE products.gender = 'men' AND products.brand_id IN ( SELECT id FROM brands WHERE name = 'Nike' ) AND categories.name = 'Running'"
+}
+2026-05-14 13:15:35 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:15:35 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 2/3):
+SELECT products.name,
+       products.description,
+       product_images.image_path
+FROM products
+INNER JOIN product_variants ON products.id = product_variants.product_id
+INNER JOIN product_images ON product_variants.id = product_images.product_id
+INNER JOIN categories ON products.category_id = categories.id
+WHERE products.gender = 'men'
+  AND products.brand_id IN
+    (SELECT id
+     FROM brands
+     WHERE name = 'Nike')
+  AND categories.name = 'Running'
+2026-05-14 13:15:35 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 2/3
+2026-05-14 13:15:35 | DEBUG    | run_safe_pipeline              | Result rows: 0
+2026-05-14 13:15:35 | INFO     | run_safe_pipeline              | Result:
+[]
+2026-05-14 13:15:35 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-14 13:15:35 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:15:35 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: What is the weather like in New York right now?
+2026-05-14 13:15:35 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:15:35 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-14 13:15:35 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-14 13:15:56 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "",
+  "required_tables": [],
+  "is_relevant": false
+}
+2026-05-14 13:15:56 | INFO     | get_sql_plan                   | Plan — relevant=False | tables=[]
+2026-05-14 13:15:56 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "",
+  "required_tables": [],
+  "required_columns": [],
+  "filter_conditions": [],
+  "is_relevant": false
+}
+2026-05-14 13:15:56 | WARNING  | run_safe_pipeline              | PIPELINE HALTED — query not relevant to schema.
+2026-05-14 13:15:56 | WARNING  | run_safe_pipeline              | Reason: 
+2026-05-14 13:15:56 | INFO     | <module>                       | Pipeline result status: irrelevant
+
+2026-05-14 13:21:14 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-14 13:21:14 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:21:14 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-14 13:21:14 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:21:14 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-14 13:21:14 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-14 13:21:31 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT name, price FROM products WHERE gender = 'men' AND color = 'black' ORDER BY price DESC LIMIT 3",
+  "required_tables": ["products"],
+  "is_relevant": true,
+  "required_columns": [
+    "products.name",
+    "products.price"
+  ]
+}
+2026-05-14 13:21:31 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-14 13:21:31 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT name, price FROM products WHERE gender = 'men' AND color = 'black' ORDER BY price DESC LIMIT 3",
+  "required_tables": [
+    "products"
+  ],
+  "required_columns": [
+    "products.name",
+    "products.price"
+  ],
+  "filter_conditions": [],
+  "is_relevant": true
+}
+2026-05-14 13:21:31 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-14 13:21:31 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:21:45 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT name, price FROM products WHERE gender = 'men' AND color = 'black' ORDER BY price DESC LIMIT 3"
+}
+2026-05-14 13:21:45 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:21:45 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT name,
+       price
+FROM products
+WHERE gender = 'men'
+  AND color = 'black'
+ORDER BY price DESC
+LIMIT 3
+2026-05-14 13:21:45 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 1: (psycopg2.errors.UndefinedColumn) column "color" does not exist
+2026-05-14 13:21:45 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column "color" does not exist
+LINE 5:   AND color = 'black'
+              ^
+
+[SQL: SELECT name,
+       price
+FROM products
+WHERE gender = 'men'
+  AND color = 'black'
+ORDER BY price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:21:45 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-14 13:21:45 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 2/3)...
+2026-05-14 13:21:45 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:21:48 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT name, price FROM products WHERE gender = 'men' AND color = 'black' ORDER BY price DESC LIMIT 3"
+}
+2026-05-14 13:21:48 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:21:48 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 2/3):
+SELECT name,
+       price
+FROM products
+WHERE gender = 'men'
+  AND color = 'black'
+ORDER BY price DESC
+LIMIT 3
+2026-05-14 13:21:48 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 2: (psycopg2.errors.UndefinedColumn) column "color" does not exist
+2026-05-14 13:21:48 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column "color" does not exist
+LINE 5:   AND color = 'black'
+              ^
+
+[SQL: SELECT name,
+       price
+FROM products
+WHERE gender = 'men'
+  AND color = 'black'
+ORDER BY price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:21:48 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-14 13:21:48 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 3/3)...
+2026-05-14 13:21:48 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:21:50 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT name, price FROM products WHERE gender = 'men' AND color = 'Black' ORDER BY price DESC LIMIT 3"
+}
+2026-05-14 13:21:50 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:21:50 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 3/3):
+SELECT name,
+       price
+FROM products
+WHERE gender = 'men'
+  AND color = 'Black'
+ORDER BY price DESC
+LIMIT 3
+2026-05-14 13:21:50 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 3: (psycopg2.errors.UndefinedColumn) column "color" does not exist
+2026-05-14 13:21:50 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column "color" does not exist
+LINE 5:   AND color = 'Black'
+              ^
+
+[SQL: SELECT name,
+       price
+FROM products
+WHERE gender = 'men'
+  AND color = 'Black'
+ORDER BY price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:21:50 | ERROR    | run_safe_pipeline              | ⛔ PIPELINE FAILED — could not repair query after 3 attempts.
+2026-05-14 13:21:50 | INFO     | <module>                       | Pipeline result status: failed
+
+2026-05-14 13:21:50 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:21:50 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-14 13:21:50 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:21:50 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-14 13:21:50 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-14 13:22:11 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+    "rewritten_user_query": "SELECT products.price, products.name FROM products WHERE gender = 'men'",
+    "required_tables": ["products"],
+    "is_relevant": true,
+    "filter_conditions": [
+        "gender = 'men'"
+    ]
+}
+2026-05-14 13:22:11 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-14 13:22:11 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT products.price, products.name FROM products WHERE gender = 'men'",
+  "required_tables": [
+    "products"
+  ],
+  "required_columns": [],
+  "filter_conditions": [
+    "gender = 'men'"
+  ],
+  "is_relevant": true
+}
+2026-05-14 13:22:11 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-14 13:22:11 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:22:25 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.price, products.name FROM products WHERE products.gender = 'men'"
+}
+2026-05-14 13:22:25 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:22:25 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.price,
+       products.name
+FROM products
+WHERE products.gender = 'men'
+2026-05-14 13:22:25 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-14 13:22:25 | DEBUG    | run_safe_pipeline              | Result rows: 15
+2026-05-14 13:22:25 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "price": 120.5,
+    "name": "Air Max 270"
+  },
+  {
+    "price": 124.01,
+    "name": "Converse Skateboarding Elite 16"
+  },
+  {
+    "price": 166.06,
+    "name": "Reebok Basketball Max 45"
+  },
+  {
+    "price": 90.15,
+    "name": "Under Armour Running Max 37"
+  },
+  {
+    "price": 118.86,
+    "name": "Adidas Skateboarding Pro 62"
+  },
+  {
+    "price": 110.9,
+    "name": "Nike Basketball Elite 2"
+  },
+  {
+    "price": 100.18,
+    "name": "Converse Lifestyle Pro 1"
+  },
+  {
+    "price": 238.91,
+    "name": "Nike Running Elite 75"
+  },
+  {
+    "price": 183.13,
+    "name": "New Balance Skateboarding Pro 19"
+  },
+  {
+    "price": 232.02,
+    "name": "Under Armour Outdoor Elite 89"
+  },
+  {
+    "price": 83.11,
+    "name": "New Balance Outdoor Ultra 32"
+  },
+  {
+    "price": 177.28,
+    "name": "Adidas Casual Pro 12"
+  },
+  {
+    "price": 52.45,
+    "name": "Nike Running Max 98"
+  },
+  {
+    "price": 100.47,
+    "name": "Reebok Lifestyle Ultra 54"
+  },
+  {
+    "price": 133.71,
+    "name": "Adidas Training Pro 53"
+  }
+]
+2026-05-14 13:22:25 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-14 13:22:25 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:22:25 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: Show me all 'men' products from 'Nike' that are in the 'Running' category, including their price and primary image path.
+2026-05-14 13:22:25 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:22:25 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-14 13:22:25 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-14 13:22:57 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT products.price, product_images.image_path FROM products INNER JOIN product_images ON products.id = product_images.product_id WHERE products.gender = 'men' AND products.brand_id IN ( SELECT id FROM brands WHERE name = 'Nike' ) AND category_id IN ( SELECT id FROM categories WHERE name = 'Running' )",
+  "required_tables": [
+    "products",
+    "product_images",
+    "brands",
+    "categories"
+  ],
+  "is_relevant": true,
+  "filter_conditions": [
+    "products.gender = 'men'",
+    "products.brand_id IN ( SELECT id FROM brands WHERE name = 'Nike' )",
+    "category_id IN ( SELECT id FROM categories WHERE name = 'Running' )"
+  ]
+}
+2026-05-14 13:22:57 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'product_images', 'brands', 'categories']
+2026-05-14 13:22:57 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT products.price, product_images.image_path FROM products INNER JOIN product_images ON products.id = product_images.product_id WHERE products.gender = 'men' AND products.brand_id IN ( SELECT id FROM brands WHERE name = 'Nike' ) AND category_id IN ( SELECT id FROM categories WHERE name = 'Running' )",
+  "required_tables": [
+    "products",
+    "product_images",
+    "brands",
+    "categories"
+  ],
+  "required_columns": [],
+  "filter_conditions": [
+    "products.gender = 'men'",
+    "products.brand_id IN ( SELECT id FROM brands WHERE name = 'Nike' )",
+    "category_id IN ( SELECT id FROM categories WHERE name = 'Running' )"
+  ],
+  "is_relevant": true
+}
+2026-05-14 13:22:57 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-14 13:22:57 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:23:12 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-14 13:23:12 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:23:12 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-14 13:23:12 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:23:12 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-14 13:23:12 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-14 13:23:38 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT name, price FROM products WHERE gender = 'men' AND color = 'Black' ORDER BY price DESC LIMIT 3",
+  "required_tables": [
+    "products"
+  ],
+  "is_relevant": true,
+  "filter_conditions": [
+    "gender = 'men'",
+    "color = 'Black'"
+  ]
+}
+2026-05-14 13:23:38 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-14 13:23:38 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT name, price FROM products WHERE gender = 'men' AND color = 'Black' ORDER BY price DESC LIMIT 3",
+  "required_tables": [
+    "products"
+  ],
+  "required_columns": [],
+  "filter_conditions": [
+    "gender = 'men'",
+    "color = 'Black'"
+  ],
+  "is_relevant": true
+}
+2026-05-14 13:23:38 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-14 13:23:38 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:23:54 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men' AND products.color = 'Black' ORDER BY products.price DESC LIMIT 3"
+}
+2026-05-14 13:23:54 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:23:54 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3
+2026-05-14 13:23:55 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 1: (psycopg2.errors.UndefinedColumn) column products.color does not exist
+2026-05-14 13:23:55 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column products.color does not exist
+LINE 5:   AND products.color = 'Black'
+              ^
+
+[SQL: SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:23:55 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-14 13:23:55 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 2/3)...
+2026-05-14 13:23:55 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:23:59 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men' AND products.color = 'Black' ORDER BY products.price DESC LIMIT 3"
+}
+2026-05-14 13:23:59 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:23:59 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 2/3):
+SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3
+2026-05-14 13:23:59 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 2: (psycopg2.errors.UndefinedColumn) column products.color does not exist
+2026-05-14 13:23:59 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column products.color does not exist
+LINE 5:   AND products.color = 'Black'
+              ^
+
+[SQL: SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:23:59 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-14 13:23:59 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 3/3)...
+2026-05-14 13:23:59 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:24:02 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men' AND products.color = 'Black' ORDER BY products.price DESC LIMIT 3"
+}
+2026-05-14 13:24:02 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:24:02 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 3/3):
+SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3
+2026-05-14 13:24:02 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 3: (psycopg2.errors.UndefinedColumn) column products.color does not exist
+2026-05-14 13:24:02 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column products.color does not exist
+LINE 5:   AND products.color = 'Black'
+              ^
+
+[SQL: SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:24:02 | ERROR    | run_safe_pipeline              | ⛔ PIPELINE FAILED — could not repair query after 3 attempts.
+2026-05-14 13:24:02 | INFO     | <module>                       | Pipeline result status: failed
+
+2026-05-14 13:24:02 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:24:02 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-14 13:24:02 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:24:02 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-14 13:24:02 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-14 13:24:27 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+    "rewritten_user_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men'",
+    "required_tables": ["products"],
+    "is_relevant": true,
+    "required_columns": [
+        "products.id",
+        "products.name",
+        "products.price",
+        "products.gender"
+    ]
+}
+2026-05-14 13:24:27 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-14 13:24:27 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men'",
+  "required_tables": [
+    "products"
+  ],
+  "required_columns": [
+    "products.id",
+    "products.name",
+    "products.price",
+    "products.gender"
+  ],
+  "filter_conditions": [],
+  "is_relevant": true
+}
+2026-05-14 13:24:27 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-14 13:24:27 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:24:45 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.id, products.name, products.price FROM products WHERE products.gender = 'men' LIMIT 10"
+}
+2026-05-14 13:24:45 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:24:45 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.id,
+       products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+LIMIT 10
+2026-05-14 13:24:45 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-14 13:24:45 | DEBUG    | run_safe_pipeline              | Result rows: 10
+2026-05-14 13:24:45 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "id": 1,
+    "name": "Air Max 270",
+    "price": 120.5
+  },
+  {
+    "id": 29,
+    "name": "Converse Skateboarding Elite 16",
+    "price": 124.01
+  },
+  {
+    "id": 30,
+    "name": "Reebok Basketball Max 45",
+    "price": 166.06
+  },
+  {
+    "id": 31,
+    "name": "Under Armour Running Max 37",
+    "price": 90.15
+  },
+  {
+    "id": 33,
+    "name": "Adidas Skateboarding Pro 62",
+    "price": 118.86
+  },
+  {
+    "id": 35,
+    "name": "Nike Basketball Elite 2",
+    "price": 110.9
+  },
+  {
+    "id": 36,
+    "name": "Converse Lifestyle Pro 1",
+    "price": 100.18
+  },
+  {
+    "id": 37,
+    "name": "Nike Running Elite 75",
+    "price": 238.91
+  },
+  {
+    "id": 38,
+    "name": "New Balance Skateboarding Pro 19",
+    "price": 183.13
+  },
+  {
+    "id": 40,
+    "name": "Under Armour Outdoor Elite 89",
+    "price": 232.02
+  }
+]
+2026-05-14 13:24:45 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-14 13:24:45 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:24:45 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: Show me all 'men' products from 'Nike' that are in the 'Running' category, including their price and primary image path.
+2026-05-14 13:24:45 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:24:45 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-14 13:24:45 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-14 13:25:28 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT t1.name, t3.price, t4.image_path FROM brands AS t2 JOIN products AS t1 ON t2.id = t1.brand_id JOIN categories AS t5 ON t5.id = t1.category_id JOIN product_images AS t4 ON t4.product_id = t1.id WHERE t2.name = 'Nike' AND t5.name = 'Running' AND t1.gender = 'men'",
+  "required_tables": [
+    "brands",
+    "products",
+    "categories",
+    "product_images"
+  ],
+  "is_relevant": true,
+  "required_columns": [
+    "t2.name",
+    "t1.id",
+    "t5.id",
+    "t1.gender",
+    "t3.price",
+    "t4.image_path"
+  ]
+}
+2026-05-14 13:25:28 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['brands', 'products', 'categories', 'product_images']
+2026-05-14 13:25:28 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT t1.name, t3.price, t4.image_path FROM brands AS t2 JOIN products AS t1 ON t2.id = t1.brand_id JOIN categories AS t5 ON t5.id = t1.category_id JOIN product_images AS t4 ON t4.product_id = t1.id WHERE t2.name = 'Nike' AND t5.name = 'Running' AND t1.gender = 'men'",
+  "required_tables": [
+    "brands",
+    "products",
+    "categories",
+    "product_images"
+  ],
+  "required_columns": [
+    "t2.name",
+    "t1.id",
+    "t5.id",
+    "t1.gender",
+    "t3.price",
+    "t4.image_path"
+  ],
+  "filter_conditions": [],
+  "is_relevant": true
+}
+2026-05-14 13:25:28 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-14 13:25:28 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:25:54 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT t2.name, t1.id, t5.id, t1.gender, t3.price, t4.image_path FROM products AS t1 JOIN categories AS t3 ON t1.category_id = t3.id JOIN brands AS t2 ON t1.brand_id = t2.id JOIN product_images AS t4 ON t1.id = t4.product_id WHERE t1.gender = 'men' AND t2.name = 'Nike' AND t3.name = 'Running' AND t4.is_primary = TRUE"
+}
+2026-05-14 13:25:54 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:25:54 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT t2.name,
+       t1.id,
+       t5.id,
+       t1.gender,
+       t3.price,
+       t4.image_path
+FROM products AS t1
+JOIN categories AS t3 ON t1.category_id = t3.id
+JOIN brands AS t2 ON t1.brand_id = t2.id
+JOIN product_images AS t4 ON t1.id = t4.product_id
+WHERE t1.gender = 'men'
+  AND t2.name = 'Nike'
+  AND t3.name = 'Running'
+  AND t4.is_primary = TRUE
+2026-05-14 13:25:54 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 1: (psycopg2.errors.UndefinedTable) missing FROM-clause entry for table "t5"
+2026-05-14 13:25:54 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedTable) missing FROM-clause entry for table "t5"
+LINE 3:        t5.id,
+               ^
+
+[SQL: SELECT t2.name,
+       t1.id,
+       t5.id,
+       t1.gender,
+       t3.price,
+       t4.image_path
+FROM products AS t1
+JOIN categories AS t3 ON t1.category_id = t3.id
+JOIN brands AS t2 ON t1.brand_id = t2.id
+JOIN product_images AS t4 ON t1.id = t4.product_id
+WHERE t1.gender = 'men'
+  AND t2.name = 'Nike'
+  AND t3.name = 'Running'
+  AND t4.is_primary = TRUE]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:25:54 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-14 13:25:54 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 2/3)...
+2026-05-14 13:25:54 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:26:06 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT t2.name, t1.id, t4.id AS image_id, t1.gender, t3.price, t4.image_path FROM products AS t1 JOIN categories AS t3 ON t1.category_id = t3.id JOIN brands AS t2 ON t1.brand_id = t2.id JOIN product_images AS t4 ON t1.id = t4.product_id WHERE t1.gender = 'men' AND t2.name = 'Nike' AND t3.name = 'Running' AND t4.is_primary = TRUE"
+}
+2026-05-14 13:26:06 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:26:06 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 2/3):
+SELECT t2.name,
+       t1.id,
+       t4.id AS image_id,
+       t1.gender,
+       t3.price,
+       t4.image_path
+FROM products AS t1
+JOIN categories AS t3 ON t1.category_id = t3.id
+JOIN brands AS t2 ON t1.brand_id = t2.id
+JOIN product_images AS t4 ON t1.id = t4.product_id
+WHERE t1.gender = 'men'
+  AND t2.name = 'Nike'
+  AND t3.name = 'Running'
+  AND t4.is_primary = TRUE
+2026-05-14 13:26:07 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 2: (psycopg2.errors.UndefinedColumn) column t3.price does not exist
+2026-05-14 13:26:07 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column t3.price does not exist
+LINE 5:        t3.price,
+               ^
+HINT:  Perhaps you meant to reference the column "t1.price".
+
+[SQL: SELECT t2.name,
+       t1.id,
+       t4.id AS image_id,
+       t1.gender,
+       t3.price,
+       t4.image_path
+FROM products AS t1
+JOIN categories AS t3 ON t1.category_id = t3.id
+JOIN brands AS t2 ON t1.brand_id = t2.id
+JOIN product_images AS t4 ON t1.id = t4.product_id
+WHERE t1.gender = 'men'
+  AND t2.name = 'Nike'
+  AND t3.name = 'Running'
+  AND t4.is_primary = TRUE]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-14 13:26:07 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-14 13:26:07 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 3/3)...
+2026-05-14 13:26:07 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b
+2026-05-14 13:26:19 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT t2.name, t1.id, t4.id AS image_id, t1.gender, t1.price, t4.image_path FROM products AS t1 JOIN categories AS t3 ON t1.category_id = t3.id JOIN brands AS t2 ON t1.brand_id = t2.id JOIN product_images AS t4 ON t1.id = t4.product_id WHERE t1.gender = 'men' AND t2.name = 'Nike' AND t3.name = 'Running' AND t4.is_primary = TRUE"
+}
+2026-05-14 13:26:19 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-14 13:26:19 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 3/3):
+SELECT t2.name,
+       t1.id,
+       t4.id AS image_id,
+       t1.gender,
+       t1.price,
+       t4.image_path
+FROM products AS t1
+JOIN categories AS t3 ON t1.category_id = t3.id
+JOIN brands AS t2 ON t1.brand_id = t2.id
+JOIN product_images AS t4 ON t1.id = t4.product_id
+WHERE t1.gender = 'men'
+  AND t2.name = 'Nike'
+  AND t3.name = 'Running'
+  AND t4.is_primary = TRUE
+2026-05-14 13:26:19 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 3/3
+2026-05-14 13:26:19 | DEBUG    | run_safe_pipeline              | Result rows: 2
+2026-05-14 13:26:19 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "name": "Nike",
+    "id": 37,
+    "image_id": 35,
+    "gender": "men",
+    "price": 238.91,
+    "image_path": "images/product_37_primary.jpg"
+  },
+  {
+    "name": "Nike",
+    "id": 50,
+    "image_id": 48,
+    "gender": "men",
+    "price": 52.45,
+    "image_path": "images/product_50_primary.jpg"
+  }
+]
+2026-05-14 13:26:19 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-14 13:26:19 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:26:19 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: What is the weather like in New York right now?
+2026-05-14 13:26:19 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-14 13:26:19 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-14 13:26:19 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-14 13:26:43 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+    "rewritten_user_query": "SELECT * FROM weather WHERE city = 'New York'",
+    "required_tables": [],
+    "is_relevant": false,
+    "filter_conditions": []
+}
+2026-05-14 13:26:43 | INFO     | get_sql_plan                   | Plan — relevant=False | tables=[]
+2026-05-14 13:26:43 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT * FROM weather WHERE city = 'New York'",
+  "required_tables": [],
+  "required_columns": [],
+  "filter_conditions": [],
+  "is_relevant": false
+}
+2026-05-14 13:26:43 | WARNING  | run_safe_pipeline              | PIPELINE HALTED — query not relevant to schema.
+2026-05-14 13:26:43 | WARNING  | run_safe_pipeline              | Reason: SELECT * FROM weather WHERE city = 'New York'
+2026-05-14 13:26:43 | INFO     | <module>                       | Pipeline result status: irrelevant
+
+2026-05-20 19:50:27 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-20 19:50:27 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 19:50:27 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-20 19:50:27 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 19:50:27 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 19:50:27 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 19:50:51 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+    "rewritten_user_query": "SELECT name, price FROM products WHERE gender = 'men' AND color = 'Black' ORDER BY price DESC LIMIT 3",
+    "required_tables": ["products"],
+    "is_relevant": true,
+    "filter_conditions": [
+        "gender='men'",
+        "color='Black'"
+    ]
+}
+2026-05-20 19:50:51 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-20 19:50:51 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT name, price FROM products WHERE gender = 'men' AND color = 'Black' ORDER BY price DESC LIMIT 3",
+  "required_tables": [
+    "products"
+  ],
+  "required_columns": [],
+  "filter_conditions": [
+    "gender='men'",
+    "color='Black'"
+  ],
+  "is_relevant": true
+}
+2026-05-20 19:50:51 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 19:50:51 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 19:51:09 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men' AND products.color = 'Black' ORDER BY products.price DESC LIMIT 3"
+}
+2026-05-20 19:51:09 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 19:51:09 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3
+2026-05-20 19:51:09 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 1: (psycopg2.errors.UndefinedColumn) column products.color does not exist
+2026-05-20 19:51:09 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column products.color does not exist
+LINE 5:   AND products.color = 'Black'
+              ^
+
+[SQL: SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-20 19:51:09 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-20 19:51:09 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 2/3)...
+2026-05-20 19:51:09 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 19:51:14 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men' AND products.color = 'Black' ORDER BY products.price DESC LIMIT 3"
+}
+2026-05-20 19:51:14 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 19:51:14 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 2/3):
+SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3
+2026-05-20 19:51:14 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 2: (psycopg2.errors.UndefinedColumn) column products.color does not exist
+2026-05-20 19:51:14 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column products.color does not exist
+LINE 5:   AND products.color = 'Black'
+              ^
+
+[SQL: SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-20 19:51:14 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-20 19:51:14 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 3/3)...
+2026-05-20 19:51:14 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 19:51:17 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men' AND products.color = 'Black' ORDER BY products.price DESC LIMIT 3"
+}
+2026-05-20 19:51:17 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 19:51:17 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 3/3):
+SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3
+2026-05-20 19:51:17 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 3: (psycopg2.errors.UndefinedColumn) column products.color does not exist
+2026-05-20 19:51:17 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedColumn) column products.color does not exist
+LINE 5:   AND products.color = 'Black'
+              ^
+
+[SQL: SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-20 19:51:17 | ERROR    | run_safe_pipeline              | ⛔ PIPELINE FAILED — could not repair query after 3 attempts.
+2026-05-20 19:51:17 | INFO     | <module>                       | Pipeline result status: failed
+
+2026-05-20 19:51:17 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 19:51:17 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-20 19:51:17 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 19:51:17 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 19:51:17 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 19:51:39 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men'",
+  "required_tables": [
+    "products"
+  ],
+  "is_relevant": true,
+  "required_columns": [
+    "products.name",
+    "products.price",
+    "products.gender"
+  ]
+}
+2026-05-20 19:51:39 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-20 19:51:39 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men'",
+  "required_tables": [
+    "products"
+  ],
+  "required_columns": [
+    "products.name",
+    "products.price",
+    "products.gender"
+  ],
+  "filter_conditions": [],
+  "is_relevant": true
+}
+2026-05-20 19:51:39 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 19:51:39 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 19:51:55 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men'"
+}
+2026-05-20 19:51:55 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 19:51:55 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+2026-05-20 19:51:55 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 19:51:55 | DEBUG    | run_safe_pipeline              | Result rows: 15
+2026-05-20 19:51:55 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "name": "Air Max 270",
+    "price": 120.5
+  },
+  {
+    "name": "Converse Skateboarding Elite 16",
+    "price": 124.01
+  },
+  {
+    "name": "Reebok Basketball Max 45",
+    "price": 166.06
+  },
+  {
+    "name": "Under Armour Running Max 37",
+    "price": 90.15
+  },
+  {
+    "name": "Adidas Skateboarding Pro 62",
+    "price": 118.86
+  },
+  {
+    "name": "Nike Basketball Elite 2",
+    "price": 110.9
+  },
+  {
+    "name": "Converse Lifestyle Pro 1",
+    "price": 100.18
+  },
+  {
+    "name": "Nike Running Elite 75",
+    "price": 238.91
+  },
+  {
+    "name": "New Balance Skateboarding Pro 19",
+    "price": 183.13
+  },
+  {
+    "name": "Under Armour Outdoor Elite 89",
+    "price": 232.02
+  },
+  {
+    "name": "New Balance Outdoor Ultra 32",
+    "price": 83.11
+  },
+  {
+    "name": "Adidas Casual Pro 12",
+    "price": 177.28
+  },
+  {
+    "name": "Nike Running Max 98",
+    "price": 52.45
+  },
+  {
+    "name": "Reebok Lifestyle Ultra 54",
+    "price": 100.47
+  },
+  {
+    "name": "Adidas Training Pro 53",
+    "price": 133.71
+  }
+]
+2026-05-20 19:51:55 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 19:51:55 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 19:51:55 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: Show me all 'men' products from 'Nike' that are in the 'Running' category, including their price and primary image path.
+2026-05-20 19:51:55 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 19:51:55 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 19:51:55 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 19:52:23 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT products.name, products.description, product_images.image_path FROM products INNER JOIN product_images ON products.id = product_images.product_id WHERE products.gender = 'men' AND products.brand_name = 'Nike' AND categories.name = 'Running'",
+  "required_tables": [
+    "products",
+    "product_images",
+    "categories"
+  ],
+  "is_relevant": true,
+  "required_columns": [
+    "products.name",
+    "products.description",
+    "product_images.image_path",
+    "products.gender",
+    "products.brand_name",
+    "categories.name"
+  ]
+}
+2026-05-20 19:52:23 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'product_images', 'categories']
+2026-05-20 19:52:23 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT products.name, products.description, product_images.image_path FROM products INNER JOIN product_images ON products.id = product_images.product_id WHERE products.gender = 'men' AND products.brand_name = 'Nike' AND categories.name = 'Running'",
+  "required_tables": [
+    "products",
+    "product_images",
+    "categories"
+  ],
+  "required_columns": [
+    "products.name",
+    "products.description",
+    "product_images.image_path",
+    "products.gender",
+    "products.brand_name",
+    "categories.name"
+  ],
+  "filter_conditions": [],
+  "is_relevant": true
+}
+2026-05-20 19:52:23 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 19:52:23 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 19:52:49 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT p.name AS product_name, p.description, pi.image_path, p.gender, b.name AS brand_name, c.name AS category_name FROM products p JOIN categories c ON p.category_id = c.id JOIN brands b ON p.brand_id = b.id JOIN product_images pi ON p.id = pi.product_id WHERE p.gender = 'men' AND b.name = 'Nike' AND c.name = 'Running' AND pi.is_primary = TRUE"
+}
+2026-05-20 19:52:49 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 19:52:49 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT p.name AS product_name,
+       p.description,
+       pi.image_path,
+       p.gender,
+       b.name AS brand_name,
+       c.name AS category_name
+FROM products p
+JOIN categories c ON p.category_id = c.id
+JOIN brands b ON p.brand_id = b.id
+JOIN product_images pi ON p.id = pi.product_id
+WHERE p.gender = 'men'
+  AND b.name = 'Nike'
+  AND c.name = 'Running'
+  AND pi.is_primary = TRUE
+2026-05-20 19:52:50 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 19:52:50 | DEBUG    | run_safe_pipeline              | Result rows: 2
+2026-05-20 19:52:50 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "product_name": "Nike Running Elite 75",
+    "description": "Experience premium comfort with the new Nike Running Elite 75. Perfect for Running activities.",
+    "image_path": "images/product_37_primary.jpg",
+    "gender": "men",
+    "brand_name": "Nike",
+    "category_name": "Running"
+  },
+  {
+    "product_name": "Nike Running Max 98",
+    "description": "Experience premium comfort with the new Nike Running Max 98. Perfect for Running activities.",
+    "image_path": "images/product_50_primary.jpg",
+    "gender": "men",
+    "brand_name": "Nike",
+    "category_name": "Running"
+  }
+]
+2026-05-20 19:52:50 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 19:52:50 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 19:52:50 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: What is the weather like in New York right now?
+2026-05-20 19:52:50 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 19:52:50 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 19:52:50 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 19:53:16 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "No relevant query",
+  "required_tables": [],
+  "is_relevant": false
+}
+2026-05-20 19:53:16 | INFO     | get_sql_plan                   | Plan — relevant=False | tables=[]
+2026-05-20 19:53:16 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "No relevant query",
+  "required_tables": [],
+  "required_columns": [],
+  "filter_conditions": [],
+  "is_relevant": false
+}
+2026-05-20 19:53:16 | WARNING  | run_safe_pipeline              | PIPELINE HALTED — query not relevant to schema.
+2026-05-20 19:53:16 | WARNING  | run_safe_pipeline              | Reason: No relevant query
+2026-05-20 19:53:16 | INFO     | <module>                       | Pipeline result status: irrelevant
+
+2026-05-20 20:53:27 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-20 20:53:27 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:53:27 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-20 20:53:27 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:53:27 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:53:27 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:27 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:29 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:29 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:31 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:31 | WARNING  | wrapper                        | [get_sql_plan] Attempt 3/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:31 | ERROR    | wrapper                        | [get_sql_plan] All 3 attempts failed.
+2026-05-20 20:53:31 | ERROR    | run_safe_pipeline              | ⛔ FATAL pipeline error: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 266, in run_safe_pipeline
+    plan = get_sql_plan(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 93, in wrapper
+    raise last_exception
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 83, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 191, in get_sql_plan
+    response = client.chat(
+               ^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 387, in chat
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 145, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:31 | INFO     | <module>                       | Pipeline result status: fatal_error
+
+2026-05-20 20:53:31 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:53:31 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-20 20:53:31 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:53:31 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:53:31 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:31 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:33 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:33 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:35 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:35 | WARNING  | wrapper                        | [get_sql_plan] Attempt 3/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:35 | ERROR    | wrapper                        | [get_sql_plan] All 3 attempts failed.
+2026-05-20 20:53:35 | ERROR    | run_safe_pipeline              | ⛔ FATAL pipeline error: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 266, in run_safe_pipeline
+    plan = get_sql_plan(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 93, in wrapper
+    raise last_exception
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 83, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 191, in get_sql_plan
+    response = client.chat(
+               ^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 387, in chat
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 145, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:35 | INFO     | <module>                       | Pipeline result status: fatal_error
+
+2026-05-20 20:53:35 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:53:35 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: Show me all 'men' products from 'Nike' that are in the 'Running' category, including their price and primary image path.
+2026-05-20 20:53:35 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:53:35 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:53:35 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:35 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:37 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:37 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:39 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:39 | WARNING  | wrapper                        | [get_sql_plan] Attempt 3/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:39 | ERROR    | wrapper                        | [get_sql_plan] All 3 attempts failed.
+2026-05-20 20:53:39 | ERROR    | run_safe_pipeline              | ⛔ FATAL pipeline error: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 266, in run_safe_pipeline
+    plan = get_sql_plan(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 93, in wrapper
+    raise last_exception
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 83, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 191, in get_sql_plan
+    response = client.chat(
+               ^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 387, in chat
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 145, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:39 | INFO     | <module>                       | Pipeline result status: fatal_error
+
+2026-05-20 20:53:39 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:53:39 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: What is the weather like in New York right now?
+2026-05-20 20:53:39 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:53:39 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:53:39 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:39 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:41 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:41 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:43 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:53:43 | WARNING  | wrapper                        | [get_sql_plan] Attempt 3/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:43 | ERROR    | wrapper                        | [get_sql_plan] All 3 attempts failed.
+2026-05-20 20:53:43 | ERROR    | run_safe_pipeline              | ⛔ FATAL pipeline error: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 266, in run_safe_pipeline
+    plan = get_sql_plan(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 93, in wrapper
+    raise last_exception
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 83, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 191, in get_sql_plan
+    response = client.chat(
+               ^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 387, in chat
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/common_env/lib/python3.12/site-packages/ollama/_client.py", line 145, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:53:43 | INFO     | <module>                       | Pipeline result status: fatal_error
+
+2026-05-20 20:54:19 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-20 20:54:19 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:54:19 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-20 20:54:19 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:54:19 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:54:19 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:19 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:21 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:21 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:23 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:23 | WARNING  | wrapper                        | [get_sql_plan] Attempt 3/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:23 | ERROR    | wrapper                        | [get_sql_plan] All 3 attempts failed.
+2026-05-20 20:54:23 | ERROR    | run_safe_pipeline              | ⛔ FATAL pipeline error: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 266, in run_safe_pipeline
+    plan = get_sql_plan(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 93, in wrapper
+    raise last_exception
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 83, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 191, in get_sql_plan
+    response = client.chat(
+               ^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 387, in chat
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 145, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:23 | INFO     | <module>                       | Pipeline result status: fatal_error
+
+2026-05-20 20:54:23 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:54:23 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-20 20:54:23 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:54:23 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:54:23 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:23 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:25 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:25 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:27 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:27 | WARNING  | wrapper                        | [get_sql_plan] Attempt 3/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:27 | ERROR    | wrapper                        | [get_sql_plan] All 3 attempts failed.
+2026-05-20 20:54:27 | ERROR    | run_safe_pipeline              | ⛔ FATAL pipeline error: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 266, in run_safe_pipeline
+    plan = get_sql_plan(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 93, in wrapper
+    raise last_exception
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 83, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 191, in get_sql_plan
+    response = client.chat(
+               ^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 387, in chat
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 145, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:27 | INFO     | <module>                       | Pipeline result status: fatal_error
+
+2026-05-20 20:54:27 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:54:27 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: Show me all 'men' products from 'Nike' that are in the 'Running' category, including their price and primary image path.
+2026-05-20 20:54:27 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:54:27 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:54:27 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:27 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:29 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:29 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:31 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:31 | WARNING  | wrapper                        | [get_sql_plan] Attempt 3/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:31 | ERROR    | wrapper                        | [get_sql_plan] All 3 attempts failed.
+2026-05-20 20:54:31 | ERROR    | run_safe_pipeline              | ⛔ FATAL pipeline error: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 266, in run_safe_pipeline
+    plan = get_sql_plan(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 93, in wrapper
+    raise last_exception
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 83, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 191, in get_sql_plan
+    response = client.chat(
+               ^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 387, in chat
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 145, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:31 | INFO     | <module>                       | Pipeline result status: fatal_error
+
+2026-05-20 20:54:31 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:54:31 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: What is the weather like in New York right now?
+2026-05-20 20:54:31 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:54:31 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:54:31 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:31 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:33 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:33 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:35 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:54:35 | WARNING  | wrapper                        | [get_sql_plan] Attempt 3/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:35 | ERROR    | wrapper                        | [get_sql_plan] All 3 attempts failed.
+2026-05-20 20:54:35 | ERROR    | run_safe_pipeline              | ⛔ FATAL pipeline error: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 266, in run_safe_pipeline
+    plan = get_sql_plan(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 93, in wrapper
+    raise last_exception
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 83, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 191, in get_sql_plan
+    response = client.chat(
+               ^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 387, in chat
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 145, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 20:54:35 | INFO     | <module>                       | Pipeline result status: fatal_error
+
+2026-05-20 20:55:12 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-20 20:55:12 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:55:12 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-20 20:55:12 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:55:12 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:55:12 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:55:26 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT name FROM products WHERE gender = 'men' AND is_deleted = false ORDER BY price DESC LIMIT 3",
+  "required_tables": ["products"]
+  ,
+  "is_relevant": true
+}
+2026-05-20 20:55:26 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-20 20:55:26 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT name FROM products WHERE gender = 'men' AND is_deleted = false ORDER BY price DESC LIMIT 3",
+  "required_tables": [
+    "products"
+  ],
+  "is_relevant": true
+}
+2026-05-20 20:55:26 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 20:55:26 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 20:55:43 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT name FROM products WHERE gender = 'men' AND is_deleted = false ORDER BY price DESC LIMIT 3"
+}
+2026-05-20 20:55:43 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 20:55:43 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT name
+FROM products
+WHERE gender = 'men'
+  AND is_deleted = FALSE
+ORDER BY price DESC
+LIMIT 3
+2026-05-20 20:55:43 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 20:55:43 | DEBUG    | run_safe_pipeline              | Result rows: 3
+2026-05-20 20:55:43 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "name": "Nike Running Elite 75"
+  },
+  {
+    "name": "Under Armour Outdoor Elite 89"
+  },
+  {
+    "name": "New Balance Skateboarding Pro 19"
+  }
+]
+2026-05-20 20:55:43 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 20:55:43 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:55:43 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-20 20:55:43 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:55:43 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:55:43 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:56:03 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT products.price, products.name FROM products WHERE products.gender = 'men'",
+  "required_tables": ["products"]
+  ,
+  "is_relevant": true
+}
+2026-05-20 20:56:03 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-20 20:56:03 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT products.price, products.name FROM products WHERE products.gender = 'men'",
+  "required_tables": [
+    "products"
+  ],
+  "is_relevant": true
+}
+2026-05-20 20:56:03 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 20:56:03 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 20:56:20 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.price, products.name FROM products WHERE products.gender = 'men'"
+}
+2026-05-20 20:56:20 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 20:56:20 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.price,
+       products.name
+FROM products
+WHERE products.gender = 'men'
+2026-05-20 20:56:20 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 20:56:20 | DEBUG    | run_safe_pipeline              | Result rows: 15
+2026-05-20 20:56:20 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "price": 120.5,
+    "name": "Air Max 270"
+  },
+  {
+    "price": 124.01,
+    "name": "Converse Skateboarding Elite 16"
+  },
+  {
+    "price": 166.06,
+    "name": "Reebok Basketball Max 45"
+  },
+  {
+    "price": 90.15,
+    "name": "Under Armour Running Max 37"
+  },
+  {
+    "price": 118.86,
+    "name": "Adidas Skateboarding Pro 62"
+  },
+  {
+    "price": 110.9,
+    "name": "Nike Basketball Elite 2"
+  },
+  {
+    "price": 100.18,
+    "name": "Converse Lifestyle Pro 1"
+  },
+  {
+    "price": 238.91,
+    "name": "Nike Running Elite 75"
+  },
+  {
+    "price": 183.13,
+    "name": "New Balance Skateboarding Pro 19"
+  },
+  {
+    "price": 232.02,
+    "name": "Under Armour Outdoor Elite 89"
+  },
+  {
+    "price": 83.11,
+    "name": "New Balance Outdoor Ultra 32"
+  },
+  {
+    "price": 177.28,
+    "name": "Adidas Casual Pro 12"
+  },
+  {
+    "price": 52.45,
+    "name": "Nike Running Max 98"
+  },
+  {
+    "price": 100.47,
+    "name": "Reebok Lifestyle Ultra 54"
+  },
+  {
+    "price": 133.71,
+    "name": "Adidas Training Pro 53"
+  }
+]
+2026-05-20 20:56:20 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 20:56:20 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:56:20 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: Show me all 'men' products from 'Nike' that are in the 'Running' category, including their price and primary image path.
+2026-05-20 20:56:20 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:56:20 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:56:20 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:56:49 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "SELECT p.id, p.name, p.price, pi.image_path FROM products AS p JOIN product_variants AS pv ON p.id = pv.product_id JOIN product_images AS pi ON pv.id = pi.product_id WHERE p.gender = 'men' AND p.brand_id = ( SELECT id FROM brands WHERE name = 'Nike' ) AND p.category_id = ( SELECT id FROM categories WHERE name = 'Running' )",
+  "required_tables": [
+    "products",
+    "product_variants",
+    "categories",
+    "brands",
+    "product_images"
+  ],
+  "is_relevant": true
+}
+2026-05-20 20:56:49 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'product_variants', 'categories', 'brands', 'product_images']
+2026-05-20 20:56:49 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "SELECT p.id, p.name, p.price, pi.image_path FROM products AS p JOIN product_variants AS pv ON p.id = pv.product_id JOIN product_images AS pi ON pv.id = pi.product_id WHERE p.gender = 'men' AND p.brand_id = ( SELECT id FROM brands WHERE name = 'Nike' ) AND p.category_id = ( SELECT id FROM categories WHERE name = 'Running' )",
+  "required_tables": [
+    "products",
+    "product_variants",
+    "categories",
+    "brands",
+    "product_images"
+  ],
+  "is_relevant": true
+}
+2026-05-20 20:56:49 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 20:56:49 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 20:57:19 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT p.id, p.name, p.price, pi.image_path FROM products AS p JOIN product_variants AS pv ON p.id = pv.product_id JOIN product_images AS pi ON pv.id = pi.product_id WHERE p.gender = 'men' AND p.brand_id = ( SELECT id FROM brands WHERE name = 'Nike' ) AND p.category_id = ( SELECT id FROM categories WHERE name = 'Running' )"
+}
+2026-05-20 20:57:19 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 20:57:19 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT p.id,
+       p.name,
+       p.price,
+       pi.image_path
+FROM products AS p
+JOIN product_variants AS pv ON p.id = pv.product_id
+JOIN product_images AS pi ON pv.id = pi.product_id
+WHERE p.gender = 'men'
+  AND p.brand_id =
+    (SELECT id
+     FROM brands
+     WHERE name = 'Nike')
+  AND p.category_id =
+    (SELECT id
+     FROM categories
+     WHERE name = 'Running')
+2026-05-20 20:57:19 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 20:57:19 | DEBUG    | run_safe_pipeline              | Result rows: 0
+2026-05-20 20:57:19 | INFO     | run_safe_pipeline              | Result:
+[]
+2026-05-20 20:57:19 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 20:57:19 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:57:19 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: What is the weather like in New York right now?
+2026-05-20 20:57:19 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 20:57:19 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 20:57:19 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 20:57:46 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "What is the weather like in New York right now?",
+  "required_tables": [],
+  "is_relevant": false
+}
+2026-05-20 20:57:46 | INFO     | get_sql_plan                   | Plan — relevant=False | tables=[]
+2026-05-20 20:57:46 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "What is the weather like in New York right now?",
+  "required_tables": [],
+  "is_relevant": false
+}
+2026-05-20 20:57:46 | WARNING  | run_safe_pipeline              | PIPELINE HALTED — query not relevant to schema.
+2026-05-20 20:57:46 | WARNING  | run_safe_pipeline              | Reason: What is the weather like in New York right now?
+2026-05-20 20:57:46 | INFO     | <module>                       | Pipeline result status: irrelevant
+
+2026-05-20 21:11:25 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-20 21:11:25 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:11:25 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-20 21:11:25 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:11:25 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:11:25 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:11:43 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve the three products with the highest price, where the product's gender is 'men' and its color is 'Black'.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Product information",
+      "columns": [
+        "id: Product ID",
+        "name: Product name",
+        "price: Product price"
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "Product variant details",
+      "columns": [
+        "color: Variant color"
+      ],
+      "joins": [
+          "products.id = product_variants.product_id"
+        ]
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:11:43 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'product_variants']
+2026-05-20 21:11:43 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve the three products with the highest price, where the product's gender is 'men' and its color is 'Black'.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Product information",
+      "columns": [
+        "id: Product ID",
+        "name: Product name",
+        "price: Product price"
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "Product variant details",
+      "columns": [
+        "color: Variant color"
+      ],
+      "joins": [
+        "products.id = product_variants.product_id"
+      ]
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:11:43 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 21:11:43 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 21:12:03 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.price FROM products JOIN product_variants ON products.id = product_variants.product_id WHERE products.gender = 'men' AND product_variants.color = 'Black' ORDER BY products.price DESC LIMIT 3"
+}
+2026-05-20 21:12:03 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 21:12:03 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.name,
+       products.price
+FROM products
+JOIN product_variants ON products.id = product_variants.product_id
+WHERE products.gender = 'men'
+  AND product_variants.color = 'Black'
+ORDER BY products.price DESC
+LIMIT 3
+2026-05-20 21:12:03 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 21:12:03 | DEBUG    | run_safe_pipeline              | Result rows: 3
+2026-05-20 21:12:03 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "name": "Adidas Casual Pro 12",
+    "price": 177.28
+  },
+  {
+    "name": "Reebok Basketball Max 45",
+    "price": 166.06
+  },
+  {
+    "name": "Converse Skateboarding Elite 16",
+    "price": 124.01
+  }
+]
+2026-05-20 21:12:03 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 21:12:03 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:12:03 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-20 21:12:03 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:12:03 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:12:03 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:12:32 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve the product's 'price' and 'name' from products table where 'gender' equals 'men'.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Table containing shoe details",
+      "columns": ["id: Product ID", "price: Shoe Price", "name: Shoe Name"],
+      "joins": []
+    },
+    {
+      "table_name": "brands",
+      "table_description": "Table storing brand information (not used in this query)",
+      "columns": [],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:12:32 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'brands']
+2026-05-20 21:12:32 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve the product's 'price' and 'name' from products table where 'gender' equals 'men'.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Table containing shoe details",
+      "columns": [
+        "id: Product ID",
+        "price: Shoe Price",
+        "name: Shoe Name"
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "brands",
+      "table_description": "Table storing brand information (not used in this query)",
+      "columns": [],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:12:32 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 21:12:32 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 21:12:52 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.price, products.name FROM products WHERE products.gender = 'men'"
+}
+2026-05-20 21:12:52 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 21:12:52 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.price,
+       products.name
+FROM products
+WHERE products.gender = 'men'
+2026-05-20 21:12:52 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 21:12:52 | DEBUG    | run_safe_pipeline              | Result rows: 15
+2026-05-20 21:12:52 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "price": 120.5,
+    "name": "Air Max 270"
+  },
+  {
+    "price": 124.01,
+    "name": "Converse Skateboarding Elite 16"
+  },
+  {
+    "price": 166.06,
+    "name": "Reebok Basketball Max 45"
+  },
+  {
+    "price": 90.15,
+    "name": "Under Armour Running Max 37"
+  },
+  {
+    "price": 118.86,
+    "name": "Adidas Skateboarding Pro 62"
+  },
+  {
+    "price": 110.9,
+    "name": "Nike Basketball Elite 2"
+  },
+  {
+    "price": 100.18,
+    "name": "Converse Lifestyle Pro 1"
+  },
+  {
+    "price": 238.91,
+    "name": "Nike Running Elite 75"
+  },
+  {
+    "price": 183.13,
+    "name": "New Balance Skateboarding Pro 19"
+  },
+  {
+    "price": 232.02,
+    "name": "Under Armour Outdoor Elite 89"
+  },
+  {
+    "price": 83.11,
+    "name": "New Balance Outdoor Ultra 32"
+  },
+  {
+    "price": 177.28,
+    "name": "Adidas Casual Pro 12"
+  },
+  {
+    "price": 52.45,
+    "name": "Nike Running Max 98"
+  },
+  {
+    "price": 100.47,
+    "name": "Reebok Lifestyle Ultra 54"
+  },
+  {
+    "price": 133.71,
+    "name": "Adidas Training Pro 53"
+  }
+]
+2026-05-20 21:12:52 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 21:12:52 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:12:52 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: Show me all 'men' products from 'Nike' that are in the 'Running' category, including their price and primary image path.
+2026-05-20 21:12:52 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:12:52 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:12:52 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:13:49 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve all men's products from Nike that belong to the Running category, along with their prices and primary image paths.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Main product data table",
+      "columns": ["id", "price", "image_path"],
+      "joins": []
+    },
+    {
+      "table_name": "brands",
+      "table_description": "Table containing brand information",
+      "columns": ["name"],
+      "joins": ["products.brand_id = brands.id"]
+    },
+    {
+      "table_name": "categories",
+      "table_description": "Table containing product category data",
+      "columns": [],
+      "joins": ["products.category_id = categories.id"]
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "Table containing product variant information",
+      "columns": [],
+      "joins": []
+    },
+    {
+      "table_name": "product_images",
+      "table_description": "Table containing primary image paths for products",
+      "columns": ["image_path"],
+      "joins": [
+        "products.id = product_images.product_id",
+        "product_variants.size IS NULL AND product_variants.color IS NULL"
+      ]
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:13:49 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'brands', 'categories', 'product_variants', 'product_images']
+2026-05-20 21:13:49 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve all men's products from Nike that belong to the Running category, along with their prices and primary image paths.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Main product data table",
+      "columns": [
+        "id",
+        "price",
+        "image_path"
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "brands",
+      "table_description": "Table containing brand information",
+      "columns": [
+        "name"
+      ],
+      "joins": [
+        "products.brand_id = brands.id"
+      ]
+    },
+    {
+      "table_name": "categories",
+      "table_description": "Table containing product category data",
+      "columns": [],
+      "joins": [
+        "products.category_id = categories.id"
+      ]
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "Table containing product variant information",
+      "columns": [],
+      "joins": []
+    },
+    {
+      "table_name": "product_images",
+      "table_description": "Table containing primary image paths for products",
+      "columns": [
+        "image_path"
+      ],
+      "joins": [
+        "products.id = product_images.product_id",
+        "product_variants.size IS NULL AND product_variants.color IS NULL"
+      ]
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:13:49 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 21:13:49 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 21:14:32 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT p.name AS product_name, p.price, pi.image_path FROM products p JOIN brands b ON p.brand_id = b.id JOIN categories c ON p.category_id = c.id JOIN product_images pi ON p.id = pi.product_id AND product_variants.size IS NULL AND product_variants.color IS NULL WHERE p.gender = 'men' AND b.name = 'Nike' AND c.name = 'Running'"
+}
+2026-05-20 21:14:32 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 21:14:32 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT p.name AS product_name,
+       p.price,
+       pi.image_path
+FROM products p
+JOIN brands b ON p.brand_id = b.id
+JOIN categories c ON p.category_id = c.id
+JOIN product_images pi ON p.id = pi.product_id
+AND product_variants.size IS NULL
+AND product_variants.color IS NULL
+WHERE p.gender = 'men'
+  AND b.name = 'Nike'
+  AND c.name = 'Running'
+2026-05-20 21:14:32 | WARNING  | run_safe_pipeline              | DB rejected query on attempt 1: (psycopg2.errors.UndefinedTable) missing FROM-clause entry for table "product_variants"
+2026-05-20 21:14:32 | DEBUG    | run_safe_pipeline              | Full DB error:
+(psycopg2.errors.UndefinedTable) missing FROM-clause entry for table "product_variants"
+LINE 8: AND product_variants.size IS NULL
+            ^
+
+[SQL: SELECT p.name AS product_name,
+       p.price,
+       pi.image_path
+FROM products p
+JOIN brands b ON p.brand_id = b.id
+JOIN categories c ON p.category_id = c.id
+JOIN product_images pi ON p.id = pi.product_id
+AND product_variants.size IS NULL
+AND product_variants.color IS NULL
+WHERE p.gender = 'men'
+  AND b.name = 'Nike'
+  AND c.name = 'Running']
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-20 21:14:32 | INFO     | run_safe_pipeline              | Sending error context back to LLM for self-correction...
+2026-05-20 21:14:32 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 2/3)...
+2026-05-20 21:14:32 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 21:14:51 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT p.name AS product_name, p.price, pi.image_path FROM products p JOIN brands b ON p.brand_id = b.id JOIN categories c ON p.category_id = c.id JOIN product_images pi ON p.id = pi.product_id WHERE p.gender = 'men' AND b.name = 'Nike' AND c.name = 'Running' AND pi.is_primary = TRUE LIMIT 10"
+}
+2026-05-20 21:14:51 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 21:14:51 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 2/3):
+SELECT p.name AS product_name,
+       p.price,
+       pi.image_path
+FROM products p
+JOIN brands b ON p.brand_id = b.id
+JOIN categories c ON p.category_id = c.id
+JOIN product_images pi ON p.id = pi.product_id
+WHERE p.gender = 'men'
+  AND b.name = 'Nike'
+  AND c.name = 'Running'
+  AND pi.is_primary = TRUE
+LIMIT 10
+2026-05-20 21:14:51 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 2/3
+2026-05-20 21:14:51 | DEBUG    | run_safe_pipeline              | Result rows: 2
+2026-05-20 21:14:51 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "product_name": "Nike Running Elite 75",
+    "price": 238.91,
+    "image_path": "images/product_37_primary.jpg"
+  },
+  {
+    "product_name": "Nike Running Max 98",
+    "price": 52.45,
+    "image_path": "images/product_50_primary.jpg"
+  }
+]
+2026-05-20 21:14:51 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 21:14:51 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:14:51 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: What is the weather like in New York right now?
+2026-05-20 21:14:51 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:14:51 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:14:51 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:15:23 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve current weather conditions for New York City",
+  "required_tables": [],
+  "is_relevant": false
+}
+2026-05-20 21:15:23 | INFO     | get_sql_plan                   | Plan — relevant=False | tables=[]
+2026-05-20 21:15:23 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve current weather conditions for New York City",
+  "required_tables": [],
+  "is_relevant": false
+}
+2026-05-20 21:15:23 | WARNING  | run_safe_pipeline              | PIPELINE HALTED — query not relevant to schema.
+2026-05-20 21:15:23 | WARNING  | run_safe_pipeline              | Reason: Retrieve current weather conditions for New York City
+2026-05-20 21:15:23 | INFO     | <module>                       | Pipeline result status: irrelevant
+
+2026-05-20 21:23:58 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-20 21:23:58 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:23:58 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-20 21:23:58 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:23:58 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:23:58 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:24:20 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve the three products with the highest price where gender is 'men' and name contains the word 'Black'.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Product information",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "Unique product ID"},
+        {"name": "name", "data_type": "VARCHAR(255)", "description": "Product name"},
+        {"name": "price", "data_type": "NUMERIC(10, 2)", "description": "Product price"},
+        {"name": "gender", "data_type": "ENUM('men', 'women', 'unisex')", "description": "Targeted gender for the product"}
+      ],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:24:20 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-20 21:24:20 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve the three products with the highest price where gender is 'men' and name contains the word 'Black'.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Product information",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique product ID"
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Product name"
+        },
+        {
+          "name": "price",
+          "data_type": "NUMERIC(10, 2)",
+          "description": "Product price"
+        },
+        {
+          "name": "gender",
+          "data_type": "ENUM('men', 'women', 'unisex')",
+          "description": "Targeted gender for the product"
+        }
+      ],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:24:20 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 21:24:20 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 21:24:36 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.id, products.name, products.price FROM products WHERE products.gender = 'men' AND products.name LIKE '%Black%' ORDER BY products.price DESC LIMIT 3"
+}
+2026-05-20 21:24:36 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 21:24:36 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.id,
+       products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men'
+  AND products.name LIKE '%Black%'
+ORDER BY products.price DESC
+LIMIT 3
+2026-05-20 21:24:36 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 21:24:36 | DEBUG    | run_safe_pipeline              | Result rows: 0
+2026-05-20 21:24:36 | INFO     | run_safe_pipeline              | Result:
+[]
+2026-05-20 21:24:36 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 21:24:36 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:24:36 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-20 21:24:36 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:24:36 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:24:36 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:25:11 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve the 'price' and 'name' of all products where gender is 'men'.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Table containing shoe details",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "Unique product ID"},
+        {"name": "name", "data_type": "VARCHAR(255)", "description": "Shoe name"},
+        {"name": "price", "data_type": "NUMERIC(10, 2)", "description": "Product price"},
+        {"name": "gender", "data_type": "ENUM('men', 'women', 'unisex')", "description": "Gender targeted by the product"}
+      ],
+      "joins": []
+    }
+  ]
+  ,
+"is_relevant": true
+}
+2026-05-20 21:25:11 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-20 21:25:11 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve the 'price' and 'name' of all products where gender is 'men'.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Table containing shoe details",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique product ID"
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Shoe name"
+        },
+        {
+          "name": "price",
+          "data_type": "NUMERIC(10, 2)",
+          "description": "Product price"
+        },
+        {
+          "name": "gender",
+          "data_type": "ENUM('men', 'women', 'unisex')",
+          "description": "Gender targeted by the product"
+        }
+      ],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:25:11 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 21:25:11 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 21:25:26 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.price, products.name FROM products WHERE products.gender = 'men'"
+}
+2026-05-20 21:25:26 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 21:25:26 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.price,
+       products.name
+FROM products
+WHERE products.gender = 'men'
+2026-05-20 21:25:26 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 21:25:26 | DEBUG    | run_safe_pipeline              | Result rows: 15
+2026-05-20 21:25:26 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "price": 120.5,
+    "name": "Air Max 270"
+  },
+  {
+    "price": 124.01,
+    "name": "Converse Skateboarding Elite 16"
+  },
+  {
+    "price": 166.06,
+    "name": "Reebok Basketball Max 45"
+  },
+  {
+    "price": 90.15,
+    "name": "Under Armour Running Max 37"
+  },
+  {
+    "price": 118.86,
+    "name": "Adidas Skateboarding Pro 62"
+  },
+  {
+    "price": 110.9,
+    "name": "Nike Basketball Elite 2"
+  },
+  {
+    "price": 100.18,
+    "name": "Converse Lifestyle Pro 1"
+  },
+  {
+    "price": 238.91,
+    "name": "Nike Running Elite 75"
+  },
+  {
+    "price": 183.13,
+    "name": "New Balance Skateboarding Pro 19"
+  },
+  {
+    "price": 232.02,
+    "name": "Under Armour Outdoor Elite 89"
+  },
+  {
+    "price": 83.11,
+    "name": "New Balance Outdoor Ultra 32"
+  },
+  {
+    "price": 177.28,
+    "name": "Adidas Casual Pro 12"
+  },
+  {
+    "price": 52.45,
+    "name": "Nike Running Max 98"
+  },
+  {
+    "price": 100.47,
+    "name": "Reebok Lifestyle Ultra 54"
+  },
+  {
+    "price": 133.71,
+    "name": "Adidas Training Pro 53"
+  }
+]
+2026-05-20 21:25:26 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 21:25:26 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:25:26 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: Show me all 'men' products from 'Nike' that are in the 'Running' category, including their price and primary image path.
+2026-05-20 21:25:26 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:25:26 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:25:26 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:27:23 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve all male products from Nike with a Running category, along with their prices and primary image paths.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "The table containing product information.",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique identifier for each product."
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Product name."
+        },
+        {
+          "name": "price",
+          "data_type": "NUMERIC(10, 2)",
+          "description": "Product price."
+        }
+      ],
+      "joins": [
+        "products.brand_id = brands.id"
+      ]
+    },
+    {
+      "table_name": "brands",
+      "table_description": "The table containing brand information.",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique identifier for each brand."
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Brand name."
+        }
+      ]
+    },
+    {
+      "table_name": "categories",
+      "table_description": "The table containing category information.",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique identifier for each category."
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Category name."
+        }
+      ],
+      "joins": [
+        "products.category_id = categories.id"
+      ]
+    },
+    {
+      "table_name": "product_images",
+      "table_description": "The table containing product image information.",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique identifier for each product image."
+        },
+        {
+          "name": "image_path",
+          "data_type": "VARCHAR(512)",
+          "description": "Path to the product image."
+        }
+      ],
+      "joins": [
+        "products.id = product_images.product_id"
+      ]
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:27:23 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'brands', 'categories', 'product_images']
+2026-05-20 21:27:23 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve all male products from Nike with a Running category, along with their prices and primary image paths.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "The table containing product information.",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique identifier for each product."
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Product name."
+        },
+        {
+          "name": "price",
+          "data_type": "NUMERIC(10, 2)",
+          "description": "Product price."
+        }
+      ],
+      "joins": [
+        "products.brand_id = brands.id"
+      ]
+    },
+    {
+      "table_name": "brands",
+      "table_description": "The table containing brand information.",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique identifier for each brand."
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Brand name."
+        }
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "categories",
+      "table_description": "The table containing category information.",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique identifier for each category."
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Category name."
+        }
+      ],
+      "joins": [
+        "products.category_id = categories.id"
+      ]
+    },
+    {
+      "table_name": "product_images",
+      "table_description": "The table containing product image information.",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique identifier for each product image."
+        },
+        {
+          "name": "image_path",
+          "data_type": "VARCHAR(512)",
+          "description": "Path to the product image."
+        }
+      ],
+      "joins": [
+        "products.id = product_images.product_id"
+      ]
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:27:23 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 21:27:23 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 21:28:11 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.price, product_images.image_path FROM products JOIN brands ON products.brand_id = brands.id JOIN categories ON products.category_id = categories.id JOIN product_images ON products.id = product_images.product_id WHERE products.gender = 'men' AND brands.name = 'Nike' AND categories.name = 'Running' AND product_images.is_primary = true"
+}
+2026-05-20 21:28:11 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 21:28:11 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.name,
+       products.price,
+       product_images.image_path
+FROM products
+JOIN brands ON products.brand_id = brands.id
+JOIN categories ON products.category_id = categories.id
+JOIN product_images ON products.id = product_images.product_id
+WHERE products.gender = 'men'
+  AND brands.name = 'Nike'
+  AND categories.name = 'Running'
+  AND product_images.is_primary = TRUE
+2026-05-20 21:28:11 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 21:28:11 | DEBUG    | run_safe_pipeline              | Result rows: 2
+2026-05-20 21:28:11 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "name": "Nike Running Elite 75",
+    "price": 238.91,
+    "image_path": "images/product_37_primary.jpg"
+  },
+  {
+    "name": "Nike Running Max 98",
+    "price": 52.45,
+    "image_path": "images/product_50_primary.jpg"
+  }
+]
+2026-05-20 21:28:11 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 21:28:11 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:28:11 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: What is the weather like in New York right now?
+2026-05-20 21:28:11 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:28:11 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:28:11 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:28:50 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve current weather information for New York, with exact temperature and description.",
+  "required_tables": []
+  ,
+  "is_relevant": false
+}
+2026-05-20 21:28:50 | INFO     | get_sql_plan                   | Plan — relevant=False | tables=[]
+2026-05-20 21:28:50 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve current weather information for New York, with exact temperature and description.",
+  "required_tables": [],
+  "is_relevant": false
+}
+2026-05-20 21:28:50 | WARNING  | run_safe_pipeline              | PIPELINE HALTED — query not relevant to schema.
+2026-05-20 21:28:50 | WARNING  | run_safe_pipeline              | Reason: Retrieve current weather information for New York, with exact temperature and description.
+2026-05-20 21:28:50 | INFO     | <module>                       | Pipeline result status: irrelevant
+
+2026-05-20 21:31:57 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-20 21:31:57 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:31:57 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-20 21:31:57 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:31:57 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:31:57 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:32:45 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Get the top 3 products with the highest price that are men's shoes in color Black",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "contains product information",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "unique identifier"},
+        {"name": "name", "data_type": "VARCHAR(255)", "description": "product name"},
+        {"name": "price", "data_type": "NUMERIC(10, 2)", "description": "product price"},
+        {"name": "gender", "data_type": "ENUM('men', 'women', 'unisex')", "description": "product gender"},
+        {"name": "created_at", "data_type": "TIMESTAMP", "description": "timestamp of creation"}
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "contains product variant information",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "unique identifier"},
+        {"name": "color", "data_type": "VARCHAR(100)", "description": "variant color"},
+        {"name": "stock", "data_type": "INTEGER", "description": "variant stock"}
+      ],
+      "joins": [
+        "product_variants.product_id = products.id"
+      ]
+    },
+    {
+      "table_name": "brands",
+      "table_description": "contains brand information",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "unique identifier"},
+        {"name": "name", "data_type": "VARCHAR(255)", "description": "brand name"}
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_images",
+      "table_description": "contains product image information (not used in this query)",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "unique identifier"},
+        {"name": "image_path", "data_type": "VARCHAR(512)", "description": "image path"}
+      ],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:32:45 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'product_variants', 'brands', 'product_images']
+2026-05-20 21:32:45 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Get the top 3 products with the highest price that are men's shoes in color Black",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "contains product information",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "unique identifier"
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "product name"
+        },
+        {
+          "name": "price",
+          "data_type": "NUMERIC(10, 2)",
+          "description": "product price"
+        },
+        {
+          "name": "gender",
+          "data_type": "ENUM('men', 'women', 'unisex')",
+          "description": "product gender"
+        },
+        {
+          "name": "created_at",
+          "data_type": "TIMESTAMP",
+          "description": "timestamp of creation"
+        }
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "contains product variant information",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "unique identifier"
+        },
+        {
+          "name": "color",
+          "data_type": "VARCHAR(100)",
+          "description": "variant color"
+        },
+        {
+          "name": "stock",
+          "data_type": "INTEGER",
+          "description": "variant stock"
+        }
+      ],
+      "joins": [
+        "product_variants.product_id = products.id"
+      ]
+    },
+    {
+      "table_name": "brands",
+      "table_description": "contains brand information",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "unique identifier"
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "brand name"
+        }
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_images",
+      "table_description": "contains product image information (not used in this query)",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "unique identifier"
+        },
+        {
+          "name": "image_path",
+          "data_type": "VARCHAR(512)",
+          "description": "image path"
+        }
+      ],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:32:45 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 21:32:45 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 21:33:10 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT p.id, p.name, p.price FROM products p JOIN product_variants pv ON p.id = pv.product_id WHERE p.gender = 'men' AND pv.color = 'Black' ORDER BY p.price DESC LIMIT 3"
+}
+2026-05-20 21:33:10 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 21:33:10 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT p.id,
+       p.name,
+       p.price
+FROM products p
+JOIN product_variants pv ON p.id = pv.product_id
+WHERE p.gender = 'men'
+  AND pv.color = 'Black'
+ORDER BY p.price DESC
+LIMIT 3
+2026-05-20 21:33:10 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 21:33:10 | DEBUG    | run_safe_pipeline              | Result rows: 3
+2026-05-20 21:33:10 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "id": 48,
+    "name": "Adidas Casual Pro 12",
+    "price": 177.28
+  },
+  {
+    "id": 30,
+    "name": "Reebok Basketball Max 45",
+    "price": 166.06
+  },
+  {
+    "id": 29,
+    "name": "Converse Skateboarding Elite 16",
+    "price": 124.01
+  }
+]
+2026-05-20 21:33:10 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 21:33:10 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:33:10 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-20 21:33:10 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:33:10 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:33:10 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:33:17 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-20 21:33:17 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:33:17 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-20 21:33:17 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:33:17 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:33:17 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:34:27 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve the 'price' and 'name' attributes for all products that belong to the 'men' gender category.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Contains information about available shoe products.",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "Unique identifier for each product."},
+        {"name": "name", "data_type": "VARCHAR(255)", "description": "Name of the product."},
+        {"name": "price", "data_type": "NUMERIC(10, 2)", "description": "Price of the product."},
+        {"name": "gender", "data_type": "ENUM('men', 'women', 'unisex')", "description": "Category to which the product belongs (e.g., men, women, unisex)."},
+        {"name": "created_at", "data_type": "TIMESTAMP", "description": "Timestamp when the product was created."},
+        {"name": "updated_at", "data_type": "TIMESTAMP", "description": "Timestamp when the product was last updated."}
+      ],
+      "joins": []
+    }
+  ]
+  ,
+  "is_relevant": true
+}
+2026-05-20 21:34:27 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products']
+2026-05-20 21:34:27 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve the 'price' and 'name' attributes for all products that belong to the 'men' gender category.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Contains information about available shoe products.",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique identifier for each product."
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Name of the product."
+        },
+        {
+          "name": "price",
+          "data_type": "NUMERIC(10, 2)",
+          "description": "Price of the product."
+        },
+        {
+          "name": "gender",
+          "data_type": "ENUM('men', 'women', 'unisex')",
+          "description": "Category to which the product belongs (e.g., men, women, unisex)."
+        },
+        {
+          "name": "created_at",
+          "data_type": "TIMESTAMP",
+          "description": "Timestamp when the product was created."
+        },
+        {
+          "name": "updated_at",
+          "data_type": "TIMESTAMP",
+          "description": "Timestamp when the product was last updated."
+        }
+      ],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:34:27 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 21:34:27 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 21:35:23 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.name, products.price FROM products WHERE products.gender = 'men';"
+}
+2026-05-20 21:35:23 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 21:35:23 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.name,
+       products.price
+FROM products
+WHERE products.gender = 'men';
+2026-05-20 21:35:23 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 21:35:23 | DEBUG    | run_safe_pipeline              | Result rows: 15
+2026-05-20 21:35:23 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "name": "Air Max 270",
+    "price": 120.5
+  },
+  {
+    "name": "Converse Skateboarding Elite 16",
+    "price": 124.01
+  },
+  {
+    "name": "Reebok Basketball Max 45",
+    "price": 166.06
+  },
+  {
+    "name": "Under Armour Running Max 37",
+    "price": 90.15
+  },
+  {
+    "name": "Adidas Skateboarding Pro 62",
+    "price": 118.86
+  },
+  {
+    "name": "Nike Basketball Elite 2",
+    "price": 110.9
+  },
+  {
+    "name": "Converse Lifestyle Pro 1",
+    "price": 100.18
+  },
+  {
+    "name": "Nike Running Elite 75",
+    "price": 238.91
+  },
+  {
+    "name": "New Balance Skateboarding Pro 19",
+    "price": 183.13
+  },
+  {
+    "name": "Under Armour Outdoor Elite 89",
+    "price": 232.02
+  },
+  {
+    "name": "New Balance Outdoor Ultra 32",
+    "price": 83.11
+  },
+  {
+    "name": "Adidas Casual Pro 12",
+    "price": 177.28
+  },
+  {
+    "name": "Nike Running Max 98",
+    "price": 52.45
+  },
+  {
+    "name": "Reebok Lifestyle Ultra 54",
+    "price": 100.47
+  },
+  {
+    "name": "Adidas Training Pro 53",
+    "price": 133.71
+  }
+]
+2026-05-20 21:35:23 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 21:35:23 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:35:23 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: Show me all 'men' products from 'Nike' that are in the 'Running' category, including their price and primary image path.
+2026-05-20 21:35:23 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:35:23 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:35:23 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:35:25 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Server disconnected without sending a response.
+2026-05-20 21:35:27 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:35:27 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:35:29 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:35:29 | WARNING  | wrapper                        | [get_sql_plan] Attempt 3/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:35:29 | ERROR    | wrapper                        | [get_sql_plan] All 3 attempts failed.
+2026-05-20 21:35:29 | ERROR    | run_safe_pipeline              | ⛔ FATAL pipeline error: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 323, in run_safe_pipeline
+    plan = get_sql_plan(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 95, in wrapper
+    raise last_exception
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 85, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 238, in get_sql_plan
+    response = client.chat(
+               ^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 387, in chat
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 145, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:35:29 | INFO     | <module>                       | Pipeline result status: fatal_error
+
+2026-05-20 21:35:29 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:35:29 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: What is the weather like in New York right now?
+2026-05-20 21:35:29 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:35:29 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:35:29 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:35:29 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:35:31 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:35:31 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:35:33 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:35:33 | WARNING  | wrapper                        | [get_sql_plan] Attempt 3/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:35:33 | ERROR    | wrapper                        | [get_sql_plan] All 3 attempts failed.
+2026-05-20 21:35:33 | ERROR    | run_safe_pipeline              | ⛔ FATAL pipeline error: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 323, in run_safe_pipeline
+    plan = get_sql_plan(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 95, in wrapper
+    raise last_exception
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 85, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 238, in get_sql_plan
+    response = client.chat(
+               ^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 387, in chat
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 145, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:35:33 | INFO     | <module>                       | Pipeline result status: fatal_error
+
+2026-05-20 21:55:32 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-20 21:55:32 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:55:32 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-20 21:55:32 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:55:32 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:55:32 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:55:32 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:55:34 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:55:34 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:55:36 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:55:36 | WARNING  | wrapper                        | [get_sql_plan] Attempt 3/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:55:36 | ERROR    | wrapper                        | [get_sql_plan] All 3 attempts failed.
+2026-05-20 21:55:36 | ERROR    | run_safe_pipeline              | ⛔ FATAL pipeline error: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 323, in run_safe_pipeline
+    plan = get_sql_plan(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 95, in wrapper
+    raise last_exception
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 85, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/MyProjects/ollama-test/well_defined_structure_output.py", line 238, in get_sql_plan
+    response = client.chat(
+               ^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 387, in chat
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdarifulislamshakil/.pyenv/versions/3.12.10/envs/common_env/lib/python3.12/site-packages/ollama/_client.py", line 145, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:55:36 | INFO     | <module>                       | Pipeline result status: fatal_error
+
+2026-05-20 21:55:36 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:55:36 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-20 21:55:36 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:55:36 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:55:36 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:55:36 | WARNING  | wrapper                        | [get_sql_plan] Attempt 1/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:55:38 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:55:38 | WARNING  | wrapper                        | [get_sql_plan] Attempt 2/3 failed: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2026-05-20 21:56:08 | INFO     | <module>                       | Schema loaded. Tables found: ['alembic_version', 'brands', 'products', 'categories', 'product_images', 'product_variants']
+2026-05-20 21:56:08 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:56:08 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show me the top 3 most expensive Black shoes for men
+2026-05-20 21:56:08 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:56:08 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:56:08 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:57:03 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve the top 3 products with the highest price, where product variant color is 'Black' and gender is 'men'.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "contains individual shoe information",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "unique identifier for the product"
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "product name"
+        },
+        {
+          "name": "price",
+          "data_type": "NUMERIC(10, 2)",
+          "description": "product price"
+        }
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "contains variant information for each product, including color and size",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "unique identifier for the product variant"
+        },
+        {
+          "name": "product_id",
+          "data_type": "INTEGER",
+          "description": "foreign key referencing the corresponding product in products table"
+        },
+        {
+          "name": "color",
+          "data_type": "VARCHAR(100)",
+          "description": "variant color, must be 'Black' for this query"
+        }
+      ],
+      "joins": [
+        "products.id = product_variants.product_id"
+      ]
+    },
+    {
+      "table_name": "brands",
+      "table_description": "contains brand information",
+      "columns": [],
+      "joins": []
+    },
+    {
+      "table_name": "categories",
+      "table_description": "contains category information",
+      "columns": [],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:57:03 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'product_variants', 'brands', 'categories']
+2026-05-20 21:57:03 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve the top 3 products with the highest price, where product variant color is 'Black' and gender is 'men'.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "contains individual shoe information",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "unique identifier for the product"
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "product name"
+        },
+        {
+          "name": "price",
+          "data_type": "NUMERIC(10, 2)",
+          "description": "product price"
+        }
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "contains variant information for each product, including color and size",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "unique identifier for the product variant"
+        },
+        {
+          "name": "product_id",
+          "data_type": "INTEGER",
+          "description": "foreign key referencing the corresponding product in products table"
+        },
+        {
+          "name": "color",
+          "data_type": "VARCHAR(100)",
+          "description": "variant color, must be 'Black' for this query"
+        }
+      ],
+      "joins": [
+        "products.id = product_variants.product_id"
+      ]
+    },
+    {
+      "table_name": "brands",
+      "table_description": "contains brand information",
+      "columns": [],
+      "joins": []
+    },
+    {
+      "table_name": "categories",
+      "table_description": "contains category information",
+      "columns": [],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:57:03 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 21:57:03 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 21:57:23 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT p.id, p.name, p.price FROM products p JOIN product_variants pv ON p.id = pv.product_id WHERE pv.color = 'Black' AND p.gender = 'men' ORDER BY p.price DESC LIMIT 3"
+}
+2026-05-20 21:57:23 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 21:57:23 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT p.id,
+       p.name,
+       p.price
+FROM products p
+JOIN product_variants pv ON p.id = pv.product_id
+WHERE pv.color = 'Black'
+  AND p.gender = 'men'
+ORDER BY p.price DESC
+LIMIT 3
+2026-05-20 21:57:23 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 21:57:23 | DEBUG    | run_safe_pipeline              | Result rows: 3
+2026-05-20 21:57:23 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "id": 48,
+    "name": "Adidas Casual Pro 12",
+    "price": 177.28
+  },
+  {
+    "id": 30,
+    "name": "Reebok Basketball Max 45",
+    "price": 166.06
+  },
+  {
+    "id": 29,
+    "name": "Converse Skateboarding Elite 16",
+    "price": 124.01
+  }
+]
+2026-05-20 21:57:23 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 21:57:23 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:57:23 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: show price and shoe name of all males shoes
+2026-05-20 21:57:23 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:57:23 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:57:23 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:58:02 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve the price and shoe name for all male shoes.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Product information table",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "Unique product ID"},
+        {"name": "name", "data_type": "VARCHAR(255)", "description": "Shoe name"},
+        {"name": "price", "data_type": "NUMERIC(10, 2)", "description": "Product price"},
+        {"name": "gender", "data_type": "ENUM('men', 'women', 'unisex')", "description": "Target gender"}
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "Product variant information table",
+      "columns": [],
+      "joins": ["products.id = product_variants.product_id"]
+    }
+  ]
+  ,
+  "is_relevant": true
+}
+2026-05-20 21:58:02 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'product_variants']
+2026-05-20 21:58:02 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve the price and shoe name for all male shoes.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Product information table",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique product ID"
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Shoe name"
+        },
+        {
+          "name": "price",
+          "data_type": "NUMERIC(10, 2)",
+          "description": "Product price"
+        },
+        {
+          "name": "gender",
+          "data_type": "ENUM('men', 'women', 'unisex')",
+          "description": "Target gender"
+        }
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "Product variant information table",
+      "columns": [],
+      "joins": [
+        "products.id = product_variants.product_id"
+      ]
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:58:02 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 21:58:02 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 21:58:20 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT products.price, products.name FROM products JOIN product_variants ON products.id = product_variants.product_id WHERE products.gender = 'men' AND products.is_deleted = false LIMIT 100;"
+}
+2026-05-20 21:58:20 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 21:58:20 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT products.price,
+       products.name
+FROM products
+JOIN product_variants ON products.id = product_variants.product_id
+WHERE products.gender = 'men'
+  AND products.is_deleted = FALSE
+LIMIT 100;
+2026-05-20 21:58:20 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 21:58:20 | DEBUG    | run_safe_pipeline              | Result rows: 43
+2026-05-20 21:58:20 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "price": 120.5,
+    "name": "Air Max 270"
+  },
+  {
+    "price": 120.5,
+    "name": "Air Max 270"
+  },
+  {
+    "price": 120.5,
+    "name": "Air Max 270"
+  },
+  {
+    "price": 124.01,
+    "name": "Converse Skateboarding Elite 16"
+  },
+  {
+    "price": 124.01,
+    "name": "Converse Skateboarding Elite 16"
+  },
+  {
+    "price": 166.06,
+    "name": "Reebok Basketball Max 45"
+  },
+  {
+    "price": 166.06,
+    "name": "Reebok Basketball Max 45"
+  },
+  {
+    "price": 166.06,
+    "name": "Reebok Basketball Max 45"
+  },
+  {
+    "price": 166.06,
+    "name": "Reebok Basketball Max 45"
+  },
+  {
+    "price": 90.15,
+    "name": "Under Armour Running Max 37"
+  },
+  {
+    "price": 90.15,
+    "name": "Under Armour Running Max 37"
+  },
+  {
+    "price": 90.15,
+    "name": "Under Armour Running Max 37"
+  },
+  {
+    "price": 90.15,
+    "name": "Under Armour Running Max 37"
+  },
+  {
+    "price": 118.86,
+    "name": "Adidas Skateboarding Pro 62"
+  },
+  {
+    "price": 118.86,
+    "name": "Adidas Skateboarding Pro 62"
+  },
+  {
+    "price": 118.86,
+    "name": "Adidas Skateboarding Pro 62"
+  },
+  {
+    "price": 110.9,
+    "name": "Nike Basketball Elite 2"
+  },
+  {
+    "price": 110.9,
+    "name": "Nike Basketball Elite 2"
+  },
+  {
+    "price": 110.9,
+    "name": "Nike Basketball Elite 2"
+  },
+  {
+    "price": 110.9,
+    "name": "Nike Basketball Elite 2"
+  },
+  {
+    "price": 100.18,
+    "name": "Converse Lifestyle Pro 1"
+  },
+  {
+    "price": 100.18,
+    "name": "Converse Lifestyle Pro 1"
+  },
+  {
+    "price": 238.91,
+    "name": "Nike Running Elite 75"
+  },
+  {
+    "price": 238.91,
+    "name": "Nike Running Elite 75"
+  },
+  {
+    "price": 238.91,
+    "name": "Nike Running Elite 75"
+  },
+  {
+    "price": 183.13,
+    "name": "New Balance Skateboarding Pro 19"
+  },
+  {
+    "price": 183.13,
+    "name": "New Balance Skateboarding Pro 19"
+  },
+  {
+    "price": 232.02,
+    "name": "Under Armour Outdoor Elite 89"
+  },
+  {
+    "price": 232.02,
+    "name": "Under Armour Outdoor Elite 89"
+  },
+  {
+    "price": 232.02,
+    "name": "Under Armour Outdoor Elite 89"
+  },
+  {
+    "price": 83.11,
+    "name": "New Balance Outdoor Ultra 32"
+  },
+  {
+    "price": 83.11,
+    "name": "New Balance Outdoor Ultra 32"
+  },
+  {
+    "price": 177.28,
+    "name": "Adidas Casual Pro 12"
+  },
+  {
+    "price": 177.28,
+    "name": "Adidas Casual Pro 12"
+  },
+  {
+    "price": 52.45,
+    "name": "Nike Running Max 98"
+  },
+  {
+    "price": 52.45,
+    "name": "Nike Running Max 98"
+  },
+  {
+    "price": 52.45,
+    "name": "Nike Running Max 98"
+  },
+  {
+    "price": 52.45,
+    "name": "Nike Running Max 98"
+  },
+  {
+    "price": 100.47,
+    "name": "Reebok Lifestyle Ultra 54"
+  },
+  {
+    "price": 100.47,
+    "name": "Reebok Lifestyle Ultra 54"
+  },
+  {
+    "price": 100.47,
+    "name": "Reebok Lifestyle Ultra 54"
+  },
+  {
+    "price": 133.71,
+    "name": "Adidas Training Pro 53"
+  },
+  {
+    "price": 133.71,
+    "name": "Adidas Training Pro 53"
+  }
+]
+2026-05-20 21:58:20 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 21:58:20 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:58:20 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: Show me all 'men' products from 'Nike' that are in the 'Running' category, including their price and primary image path.
+2026-05-20 21:58:20 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 21:58:20 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 21:58:20 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 21:59:52 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve a list of men's Nike running shoes with their prices and primary image paths.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Product information table",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "Unique product ID"},
+        {"name": "name", "data_type": "VARCHAR(255)", "description": "Product name"},
+        {"name": "price", "data_type": "NUMERIC(10, 2)", "description": "Product price"},
+        {"name": "category_id", "data_type": "INTEGER", "description": "Category ID"}
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "brands",
+      "table_description": "Brand information table",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "Unique brand ID"},
+        {"name": "name", "data_type": "VARCHAR(255)", "description": "Brand name"}
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "categories",
+      "table_description": "Category information table",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "Unique category ID"},
+        {"name": "name", "data_type": "VARCHAR(255)", "description": "Category name"}
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_images",
+      "table_description": "Product image information table",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "Unique product image ID"},
+        {"name": "image_path", "data_type": "VARCHAR(512)", "description": "Image path"}
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "Product variant information table",
+      "columns": [
+        {"name": "id", "data_type": "INTEGER", "description": "Unique product variant ID"},
+        {"name": "product_id", "data_type": "INTEGER", "description": "Product ID"}
+      ],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:59:52 | INFO     | get_sql_plan                   | Plan — relevant=True | tables=['products', 'brands', 'categories', 'product_images', 'product_variants']
+2026-05-20 21:59:52 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve a list of men's Nike running shoes with their prices and primary image paths.",
+  "required_tables": [
+    {
+      "table_name": "products",
+      "table_description": "Product information table",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique product ID"
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Product name"
+        },
+        {
+          "name": "price",
+          "data_type": "NUMERIC(10, 2)",
+          "description": "Product price"
+        },
+        {
+          "name": "category_id",
+          "data_type": "INTEGER",
+          "description": "Category ID"
+        }
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "brands",
+      "table_description": "Brand information table",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique brand ID"
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Brand name"
+        }
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "categories",
+      "table_description": "Category information table",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique category ID"
+        },
+        {
+          "name": "name",
+          "data_type": "VARCHAR(255)",
+          "description": "Category name"
+        }
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_images",
+      "table_description": "Product image information table",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique product image ID"
+        },
+        {
+          "name": "image_path",
+          "data_type": "VARCHAR(512)",
+          "description": "Image path"
+        }
+      ],
+      "joins": []
+    },
+    {
+      "table_name": "product_variants",
+      "table_description": "Product variant information table",
+      "columns": [
+        {
+          "name": "id",
+          "data_type": "INTEGER",
+          "description": "Unique product variant ID"
+        },
+        {
+          "name": "product_id",
+          "data_type": "INTEGER",
+          "description": "Product ID"
+        }
+      ],
+      "joins": []
+    }
+  ],
+  "is_relevant": true
+}
+2026-05-20 21:59:52 | INFO     | run_safe_pipeline              | [Stage 2/3] Generating SQL (attempt 1/3)...
+2026-05-20 21:59:52 | DEBUG    | generate_final_sql             | Calling coder model: qwen2.5-coder:7b-instruct-q8_0
+2026-05-20 22:00:26 | DEBUG    | generate_final_sql             | Coder raw response:
+{
+  "sql_query": "SELECT p.id, p.name, p.price, pi.image_path FROM products p JOIN product_variants pv ON p.id = pv.product_id JOIN product_images pi ON p.id = pi.product_id WHERE p.gender = 'men' AND p.brand_id IN (SELECT id FROM brands WHERE name = 'Nike') AND p.category_id IN (SELECT id FROM categories WHERE name = 'Running') AND pi.is_primary = TRUE"
+}
+2026-05-20 22:00:26 | INFO     | generate_final_sql             | Generated SQL explanation: 
+2026-05-20 22:00:26 | INFO     | run_safe_pipeline              | [Stage 3/3] Executing SQL (attempt 1/3):
+SELECT p.id,
+       p.name,
+       p.price,
+       pi.image_path
+FROM products p
+JOIN product_variants pv ON p.id = pv.product_id
+JOIN product_images pi ON p.id = pi.product_id
+WHERE p.gender = 'men'
+  AND p.brand_id IN
+    (SELECT id
+     FROM brands
+     WHERE name = 'Nike')
+  AND p.category_id IN
+    (SELECT id
+     FROM categories
+     WHERE name = 'Running')
+  AND pi.is_primary = TRUE
+2026-05-20 22:00:26 | INFO     | run_safe_pipeline              | ✅ Query succeeded on attempt 1/3
+2026-05-20 22:00:26 | DEBUG    | run_safe_pipeline              | Result rows: 7
+2026-05-20 22:00:26 | INFO     | run_safe_pipeline              | Result:
+[
+  {
+    "id": 37,
+    "name": "Nike Running Elite 75",
+    "price": 238.91,
+    "image_path": "images/product_37_primary.jpg"
+  },
+  {
+    "id": 37,
+    "name": "Nike Running Elite 75",
+    "price": 238.91,
+    "image_path": "images/product_37_primary.jpg"
+  },
+  {
+    "id": 37,
+    "name": "Nike Running Elite 75",
+    "price": 238.91,
+    "image_path": "images/product_37_primary.jpg"
+  },
+  {
+    "id": 50,
+    "name": "Nike Running Max 98",
+    "price": 52.45,
+    "image_path": "images/product_50_primary.jpg"
+  },
+  {
+    "id": 50,
+    "name": "Nike Running Max 98",
+    "price": 52.45,
+    "image_path": "images/product_50_primary.jpg"
+  },
+  {
+    "id": 50,
+    "name": "Nike Running Max 98",
+    "price": 52.45,
+    "image_path": "images/product_50_primary.jpg"
+  },
+  {
+    "id": 50,
+    "name": "Nike Running Max 98",
+    "price": 52.45,
+    "image_path": "images/product_50_primary.jpg"
+  }
+]
+2026-05-20 22:00:26 | INFO     | <module>                       | Pipeline result status: success
+
+2026-05-20 22:00:26 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 22:00:26 | INFO     | run_safe_pipeline              | PIPELINE START  |  query: What is the weather like in New York right now?
+2026-05-20 22:00:26 | INFO     | run_safe_pipeline              | ============================================================
+2026-05-20 22:00:26 | INFO     | run_safe_pipeline              | [Stage 1/3] Running planner...
+2026-05-20 22:00:26 | DEBUG    | get_sql_plan                   | Calling planner model: llama3.1:8b-instruct-q8_0
+2026-05-20 22:00:52 | DEBUG    | get_sql_plan                   | Planner raw response:
+{
+  "rewritten_user_query": "Retrieve current weather information for New York",
+  "required_tables": [],
+  "is_relevant": false
+}
+2026-05-20 22:00:52 | INFO     | get_sql_plan                   | Plan — relevant=False | tables=[]
+2026-05-20 22:00:52 | INFO     | run_safe_pipeline              | Execution plan:
+{
+  "rewritten_user_query": "Retrieve current weather information for New York",
+  "required_tables": [],
+  "is_relevant": false
+}
+2026-05-20 22:00:52 | WARNING  | run_safe_pipeline              | PIPELINE HALTED — query not relevant to schema.
+2026-05-20 22:00:52 | WARNING  | run_safe_pipeline              | Reason: Retrieve current weather information for New York
+2026-05-20 22:00:52 | INFO     | <module>                       | Pipeline result status: irrelevant
+

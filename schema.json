@@ -1,0 +1,203 @@
+{
+    "alembic_version": [
+        {
+            "name": "version_num",
+            "type": "VARCHAR(32)",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        }
+    ],
+    "brands": [
+        {
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": "nextval('brands_id_seq'::regclass)",
+            "primary_key": false
+        },
+        {
+            "name": "name",
+            "type": "VARCHAR(255)",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "now()",
+            "primary_key": false
+        }
+    ],
+    "products": [
+        {
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": "nextval('products_id_seq'::regclass)",
+            "primary_key": false
+        },
+        {
+            "name": "name",
+            "type": "VARCHAR(255)",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "description",
+            "type": "TEXT",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "brand_id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "category_id",
+            "type": "INTEGER",
+            "nullable": true,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "gender",
+            "type": "ENUM('men', 'women', 'unisex')",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "price",
+            "type": "NUMERIC(10, 2)",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "is_deleted",
+            "type": "BOOLEAN",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "now()",
+            "primary_key": false
+        },
+        {
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "now()",
+            "primary_key": false
+        }
+    ],
+    "categories": [
+        {
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": "nextval('categories_id_seq'::regclass)",
+            "primary_key": false
+        },
+        {
+            "name": "name",
+            "type": "VARCHAR(255)",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "nullable": false,
+            "default": "now()",
+            "primary_key": false
+        }
+    ],
+    "product_images": [
+        {
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": "nextval('product_images_id_seq'::regclass)",
+            "primary_key": false
+        },
+        {
+            "name": "product_id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "image_path",
+            "type": "VARCHAR(512)",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "is_primary",
+            "type": "BOOLEAN",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        }
+    ],
+    "product_variants": [
+        {
+            "name": "id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": "nextval('product_variants_id_seq'::regclass)",
+            "primary_key": false
+        },
+        {
+            "name": "product_id",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "size",
+            "type": "VARCHAR(50)",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "color",
+            "type": "VARCHAR(100)",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "stock",
+            "type": "INTEGER",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        },
+        {
+            "name": "sku",
+            "type": "VARCHAR(100)",
+            "nullable": false,
+            "default": null,
+            "primary_key": false
+        }
+    ]
+}

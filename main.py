@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
-from app.agents import PlannerAgent, SQLGeneratorAgent, ValidatorAgent, FormatterAgent, MemoryManager
+from app.agents import MainAgent, MemoryManager
 from app.database import execute_query, get_schema_summary
 from loguru import logger
 
@@ -18,10 +18,7 @@ async def read_index():
     return FileResponse("static/index.html")
 
 # Initialize agents and memory
-planner = PlannerAgent()
-generator = SQLGeneratorAgent()
-validator = ValidatorAgent()
-formatter = FormatterAgent()
+main_agent = MainAgent()
 memory = MemoryManager()
 
 class QueryRequest(BaseModel):
@@ -33,61 +30,48 @@ class QueryResponse(BaseModel):
     sql: str
     answer: str
     results: List[Dict[str, Any]]
+    csv_path: Optional[str] = None
+    summary: Optional[Any] = None
 
 @app.post("/query", response_model=QueryResponse)
 async def handle_query(request: QueryRequest):
     session_id = request.session_id or str(uuid.uuid4())
     user_query = request.query
     
-    # 1. Get Schema
-    schema = get_schema_summary()
-    logger.info(f'✅ Schema fetched:\n\n {schema}')
+    logger.info(f"🚀 Processing Query for session {session_id}: {user_query}")
     
-    # 2. Plan (Identify tables) 
-    try:
-        tables = planner.run(user_query, schema)
-        logger.info(f'✅ Tables fetched:\n\n {tables}')
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Planning error: {str(e)}")
-    
-    # 3. Generate SQL
+    # Get History
     history = memory.get_history(session_id)
+    
+    # Run Agent
     try:
-        sql = generator.run(user_query, tables, schema, history)
-        logger.info(f'✅ SQL generated:\n\n {sql}')
+        agent_result = main_agent.run(user_query, history)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"SQL generation error: {str(e)}")
+        logger.error(f"❌ Main Agent Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Agent Error: {str(e)}")
     
-    # 4. Validate SQL
-    validation = validator.run(sql)
-    logger.info(f'✅ SQL validated:\n\n {validation}')
-    if not validation["valid"]:
-        raise HTTPException(status_code=400, detail=f"SQL Validation failed: {validation['error']}")
+    answer = agent_result["answer"]
+    tool_results = agent_result.get("tool_results", {})
     
-    # 5. Execute SQL
-    try:
-        results = execute_query(sql)
-        logger.info(f'✅ SQL executed:\n\n {results}')
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"SQL Execution error: {str(e)}")
+    # Extract data from tool results
+    sql = tool_results.get("sql", "N/A")
+    results = tool_results.get("sample_rows", [])
+    csv_path = tool_results.get("csv_path")
+    summary = tool_results.get("summary")
     
-    # 6. Organize Answer
-    try:
-        answer = formatter.run(user_query, sql, results)
-        logger.info(f'✅ Answer organized:\n\n {answer}')
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Formatting error: {str(e)}")
-    
-    # 7. Update Memory
+    # Update Memory 
     memory.add_message(session_id, "user", user_query)
-    memory.add_message(session_id, "assistant", answer)
+    memory.add_message(session_id, "assistant", answer + "\n\n**SQL Used:**\n" + sql)
     
     return QueryResponse(
         session_id=session_id,
         sql=sql,
         answer=answer,
-        results=results
-    ) 
+        results=results,
+        csv_path=csv_path,
+        summary=summary
+    )
+ 
 
 if __name__ == "__main__":
     import uvicorn
